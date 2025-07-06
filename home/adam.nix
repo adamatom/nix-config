@@ -12,7 +12,7 @@
 
     # CLI tools
     vimHugeX wget git killall zip xz unzip ripgrep jq dnsutils nmap file which tree
-    gnused gnutar gawk zstd gnupg bat neofetch picocom zoxide wl-clipboard
+    gnused gnutar gawk zstd gnupg bat neofetch picocom zoxide wl-clipboard fzf mcfly
 
     # Development tools
     pkg-config openssl gcc clang-tools clang-analyzer

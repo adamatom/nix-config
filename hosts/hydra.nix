@@ -20,6 +20,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernel.sysctl = {
+    "fs.mqueue.msg_max" = 16384;
+    "fs.mqueue.queues_max" = 1024;
+    "fs.mqueue.msgsize_max" = 8192;
+  };
+
   # This will disable the discrete graphics, but also kills sound
   # boot.kernelParams = ["module_blacklist=i915"];
 
@@ -78,7 +84,6 @@
 
     saleae-logic.enable = true;
   };
-
 
   services = {
     # Just ignore the lid
@@ -144,6 +149,36 @@
 
   security.rtkit.enable = true;
 
+  # security.pam.enableLimits = true;
+
+  security.pam.loginLimits = [
+    {
+      domain = "adam";
+      type = "hard";
+      item = "rtprio";
+      value = "99";
+    }
+    {
+      domain = "adam";
+      type = "soft";
+      item = "rtprio";
+      value = "99";
+    }
+    {
+      domain = "adam";
+      type = "hard";
+      item = "msgqueue";
+      value = "16777216";
+    }
+    {
+      domain = "adam";
+      type = "soft";
+      item = "msgqueue";
+      value = "16777216";
+    }
+  ];
+
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
@@ -190,6 +225,7 @@
     users.adam = {
       isNormalUser = true;
       description = "adam";
+      shell = pkgs.zsh;
       extraGroups = [
         "networkmanager"
         "wheel"

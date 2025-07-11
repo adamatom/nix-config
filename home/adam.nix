@@ -18,6 +18,11 @@
     # Development tools
     pkg-config openssl gcc clang-tools clang-analyzer
     rustup rustc python313 go gopls uv universal-ctags cmake dtc openocd
+    lua-language-server
+
+    # Fonts
+    nerd-fonts."m+" nerd-fonts.zed-mono nerd-fonts.fira-mono nerd-fonts.envy-code-r
+    nerd-fonts.monaspace nerd-fonts.meslo-lg nerd-fonts.jetbrains-mono
 
     # GTK theme
     adw-gtk3

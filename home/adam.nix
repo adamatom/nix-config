@@ -302,7 +302,7 @@
         switch-to-application-2 = [];
         switch-to-application-3 = [];
         switch-to-application-4 = [];
-        toggle-application-view = [ "<Super>space" ];
+        toggle-application-view = [ "<Shift><Super>space" ];
         toggle-message-tray = [];
       };
 
@@ -316,6 +316,10 @@
         name = "toggle ulauncher from nix";
         command = "ulauncher toggle";
         binding = "<Super>Return";
+      };
+
+      "org/gnome/mutter" = {
+        overlay-key = "";
       };
 
     };

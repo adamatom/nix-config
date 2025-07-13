@@ -202,6 +202,11 @@
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
   programs = {
     zsh.enable = true;
+
+    # This needs to be installed at the host level/nixos level to fill in for the
+    # /lib/ld-linux-x86-64.so.2 interpreter that unpatched binaries expect. If we were running
+    # home-manager on Ubuntu, then I think the unpatched binaries would just run
+    nix-ld.enable = true;
     steam = {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play

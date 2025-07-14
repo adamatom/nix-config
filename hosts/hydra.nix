@@ -198,6 +198,8 @@
     };
   };
 
+  virtualisation.docker.enable = true;
+
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
   programs = {
@@ -236,6 +238,7 @@
         "wheel"
         "dialout"
         "plugdev"
+        "docker"
       ];
       packages = with pkgs; [ ];
     };

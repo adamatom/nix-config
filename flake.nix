@@ -21,6 +21,7 @@
       nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          ./hosts/all.nix
           ./hosts/hydra.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-p53
           home-manager.nixosModules.home-manager

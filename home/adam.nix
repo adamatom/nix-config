@@ -11,7 +11,7 @@
     tmux
 
     # CLI tools
-    vimHugeX wget git killall zip xz unzip ripgrep jq dnsutils nmap file which tree
+    vimHugeX wget git git-lfs killall zip xz unzip ripgrep jq dnsutils nmap file which tree
     gnused gnutar gawk zstd gnupg bat neofetch picocom zoxide wl-clipboard fzf mcfly
     fd neovim
 

@@ -20,9 +20,6 @@
     "fs.mqueue.msgsize_max" = 8192;
   };
 
-  # This will disable the discrete graphics, but also kills sound
-  # boot.kernelParams = ["module_blacklist=i915"];
-
   # Enable OpenGL
   hardware = {
     nvidia = {

@@ -8,7 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ../modules/hardware/hydra.nix
+      ../modules/features/remap-capslock.nix
     ];
+
+  features.remapCaps.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

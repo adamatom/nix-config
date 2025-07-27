@@ -6,54 +6,84 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-
     zsh  # We dont want homemanager to manage the rc files of these yet
-    tmux
 
     # CLI tools
-    vimHugeX wget git git-lfs killall zip xz unzip ripgrep jq dnsutils nmap file which tree
-    gnused gnutar gawk zstd gnupg bat neofetch picocom zoxide wl-clipboard fzf mcfly
-    fd neovim
+    bat
+    fd
+    file
+    fzf
+    gawk
+    git
+    git-lfs
+    gnupg
+    gnused
+    gnutar
+    jq
+    killall
+    mcfly
+    neovim
+    nmap
+    picocom
+    ripgrep
+    tmux
+    tree
+    wget
+    which
+    wl-clipboard
+    xz
+    zip unzip
+    zoxide
+    zstd
+
+    # GUI apps
+    alacritty
+    discord
+    kicad
+    mpv
+    saleae-logic-2
+    ulauncher
 
     # Development tools
-    pkg-config openssl gcc clang-tools clang-analyzer
-    rustup rustc python313 go gopls uv universal-ctags cmake dtc openocd
+    clang-analyzer
+    clang-tools
+    cmake
+    dtc
+    gcc
+    go
+    gopls
     lua-language-server
     markdownlint-cli
+    openocd
+    pkg-config
+    python313
+    python313Packages.python-lsp-server
+    rustup
+    universal-ctags
+    uv
 
     # Fonts
-    nerd-fonts."m+" nerd-fonts.zed-mono nerd-fonts.fira-mono nerd-fonts.envy-code-r
-    nerd-fonts.monaspace nerd-fonts.meslo-lg nerd-fonts.jetbrains-mono
+    nerd-fonts."m+"
+    nerd-fonts.envy-code-r
+    nerd-fonts.fira-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.meslo-lg
+    nerd-fonts.monaspace
+    nerd-fonts.zed-mono
 
     # GTK theme
     adw-gtk3
 
-    # GUI apps
-    alacritty mpv discord kicad saleae-logic-2
-
-    ulauncher
-
     # Spellchecking
     hunspell hunspellDicts.en_US hunspellDicts.de_DE
 
-    alacritty
-    mpv
-    discord
-    kicad
-    saleae-logic-2
-    zoxide
-
-    adw-gtk3
-
     # GNOME Shell Extensions (needed for the dconf settings to work)
+    gnomeExtensions.bing-wallpaper-changer
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.grand-theft-focus
+    gnomeExtensions.launch-new-instance
     gnomeExtensions.paperwm
     gnomeExtensions.vitals
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.launch-new-instance
-    gnomeExtensions.bing-wallpaper-changer
-
-    # Python LSP
-    python313Packages.python-lsp-server
   ];
 
   # Install programs with more complete OS integration (desktop files, etc).

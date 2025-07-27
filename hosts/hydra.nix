@@ -20,7 +20,6 @@
     "fs.mqueue.msgsize_max" = 8192;
   };
 
-  # Enable OpenGL
   hardware = {
     nvidia = {
       # Modesetting is required.
@@ -55,20 +54,6 @@
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:1:0:0";
       };
-    };
-
-    printers = {
-      ensureDefaultPrinter = "Brother_HL_L2350DW";
-      ensurePrinters = [
-        {
-          name = "Brother_HL_L2350DW";
-          deviceUri = "dnssd://Brother%20HL-L2350DW%20series._ipp._tcp.local/?uuid=e3248000-80ce-11db-8000-a8934a957a34";
-          model = "everywhere";       # Use IPP Everywhere
-          ppdOptions = {
-            PageSize = "A4";
-          };
-        }
-      ];
     };
   };
 

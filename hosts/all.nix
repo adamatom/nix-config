@@ -60,7 +60,6 @@
       openFirewall = true;
     };
 
-
     # Enable sound with pipewire.
     pulseaudio.enable = false;
 

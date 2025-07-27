@@ -100,6 +100,7 @@
 
   dconf = {
     enable = true;
+    # tip: use `dconf watch /`, then make changes in gui to capture what to add here.
     settings = {
       "org/gnome/shell" = {
         disable-user-extensions = false; # enables user extensions
@@ -117,16 +118,13 @@
         ];
       };
 
-
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         gtk-theme = "adw-gtk3-dark";
+        enable-hot-corners = false;
+        accent-color = "green";
       };
  
-      "org/gnome/desktop/interface" = {
-        enable-hot-corners = false;
-      };
-
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-timeout=1800;
         sleep-inactive-ac-type="nothing";
@@ -341,7 +339,7 @@
         toggle-message-tray = [];
       };
 
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings" = {
+      "org/gnome/settings-daemon/plugins/media-keys" = {
         custom-keybindings = [
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"

@@ -3,9 +3,9 @@
 let
   inherit (lib) mkIf mkMerge;
 in {
-  options.bluetoothPan.enable = lib.mkEnableOption "Bluetooth PAN (NAP) server";
+  options.features.bluetoothPan.enable = lib.mkEnableOption "Bluetooth PAN (NAP) server";
 
-  config = mkIf config.bluetoothPan.enable (mkMerge [
+  config = mkIf config.features.bluetoothPan.enable (mkMerge [
     {
       # Enable required packages and services
       environment.systemPackages = with pkgs; [ bluez-tools bluez ];

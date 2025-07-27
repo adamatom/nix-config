@@ -191,6 +191,10 @@
         timer-state-duration = 0.0;
       };
 
+      "org/gnome/shell/extensions/bingwallpaper" = {
+        icon-name = "mid-frame-symbolic";
+      };
+
       "org/gnome/shell/extensions/clipboard-indicator" = {
         cache-size = 90;
         disable-down-arrow = true;

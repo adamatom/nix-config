@@ -150,7 +150,6 @@
 
       "org/gnome/desktop/wm/preferences" = {
         num-workspaces = 10;
-        workspace-names = [ "Terminals" "Browsers" "Workspace 3" ];
       };
  
       "org/gnome/mutter" = {
@@ -261,32 +260,18 @@
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces" = {
-        list = [ "9fc9ad15-f615-4734-8ffb-8f2c539aef98" "f013fd95-1bcc-46d4-a92c-8fc51965a6e1" "83b767ff-0cda-49ac-8d9a-55d35ded0303" "a9ca6656-7a05-4b9d-9071-a275c41662c7" "ded085f6-360b-49ca-b5b0-88a82cc30b1b" "955bc102-ebd1-4dd4-818e-ddc8e2c7f88a" "af2ed855-51f2-478c-a71c-a8dfe5050ba8" "187bc83c-2430-4759-b489-78f83734b0c5" "55b74379-32ef-4a19-95d2-ab2f9df63ee6" "680594cd-d7f2-4aba-8fc0-43716677250e" ];
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/187bc83c-2430-4759-b489-78f83734b0c5" = {
-        index = 7;
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/55b74379-32ef-4a19-95d2-ab2f9df63ee6" = {
-        index = 8;
-        name = "Workspace 9";
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/680594cd-d7f2-4aba-8fc0-43716677250e" = {
-        index = 9;
-        name = "Workspace 10";
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/83b767ff-0cda-49ac-8d9a-55d35ded0303" = {
-        index = 2;
-        name = "Workspace 3";
-        show-top-bar = true;
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/955bc102-ebd1-4dd4-818e-ddc8e2c7f88a" = {
-        index = 5;
-        name = "Workspace 6";
+        list = [
+          "9fc9ad15-f615-4734-8ffb-8f2c539aef98"
+          "f013fd95-1bcc-46d4-a92c-8fc51965a6e1"
+          "83b767ff-0cda-49ac-8d9a-55d35ded0303"
+          "a9ca6656-7a05-4b9d-9071-a275c41662c7"
+          "ded085f6-360b-49ca-b5b0-88a82cc30b1b"
+          "955bc102-ebd1-4dd4-818e-ddc8e2c7f88a"
+          "af2ed855-51f2-478c-a71c-a8dfe5050ba8"
+          "187bc83c-2430-4759-b489-78f83734b0c5"
+          "55b74379-32ef-4a19-95d2-ab2f9df63ee6"
+          "680594cd-d7f2-4aba-8fc0-43716677250e"
+        ];
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces/9fc9ad15-f615-4734-8ffb-8f2c539aef98" = {
@@ -297,14 +282,22 @@
         show-top-bar = true;
       };
 
+      "org/gnome/shell/extensions/paperwm/workspaces/f013fd95-1bcc-46d4-a92c-8fc51965a6e1" = {
+        index = 1;
+        name = "Browsers";
+        show-position-bar = true;
+        show-top-bar = true;
+      };
+
+      "org/gnome/shell/extensions/paperwm/workspaces/83b767ff-0cda-49ac-8d9a-55d35ded0303" = {
+        index = 2;
+        name = "Workspace 3";
+        show-top-bar = true;
+      };
+
       "org/gnome/shell/extensions/paperwm/workspaces/a9ca6656-7a05-4b9d-9071-a275c41662c7" = {
         index = 3;
         name = "Workspace 4";
-      };
-
-      "org/gnome/shell/extensions/paperwm/workspaces/af2ed855-51f2-478c-a71c-a8dfe5050ba8" = {
-        index = 6;
-        name = "Workspace 7";
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces/ded085f6-360b-49ca-b5b0-88a82cc30b1b" = {
@@ -312,11 +305,29 @@
         name = "Workspace 5";
       };
 
-      "org/gnome/shell/extensions/paperwm/workspaces/f013fd95-1bcc-46d4-a92c-8fc51965a6e1" = {
-        index = 1;
-        name = "Browsers";
-        show-position-bar = true;
-        show-top-bar = true;
+      "org/gnome/shell/extensions/paperwm/workspaces/955bc102-ebd1-4dd4-818e-ddc8e2c7f88a" = {
+        index = 5;
+        name = "Workspace 6";
+      };
+
+      "org/gnome/shell/extensions/paperwm/workspaces/af2ed855-51f2-478c-a71c-a8dfe5050ba8" = {
+        index = 6;
+        name = "Workspace 7";
+      };
+
+      "org/gnome/shell/extensions/paperwm/workspaces/187bc83c-2430-4759-b489-78f83734b0c5" = {
+        index = 7;
+        name = "Workspace 8";
+      };
+
+      "org/gnome/shell/extensions/paperwm/workspaces/55b74379-32ef-4a19-95d2-ab2f9df63ee6" = {
+        index = 8;
+        name = "Workspace 9";
+      };
+
+      "org/gnome/shell/extensions/paperwm/workspaces/680594cd-d7f2-4aba-8fc0-43716677250e" = {
+        index = 9;
+        name = "Workspace 10";
       };
 
       "org/gnome/shell/extensions/paperwm/keybindings" = {

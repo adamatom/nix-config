@@ -344,13 +344,20 @@
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings" = {
         custom-keybindings = [
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
         ];
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle ulauncher from nix";
+        name = "toggle ulauncher from nix super-return";
         command = "ulauncher toggle";
         binding = "<Super>Return";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+        name = "toggle ulauncher from nix super-space";
+        command = "ulauncher toggle";
+        binding = "<Super>Space";
       };
 
       "org/gnome/mutter" = {

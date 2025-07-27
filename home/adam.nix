@@ -186,16 +186,12 @@
       "org/gnome/shell" = {
         disable-user-extensions = false; # enables user extensions
         enabled-extensions = [
-          # Put UUIDs of extensions that you want to enable here.
-          # If the extension you want to enable is packaged in nixpkgs,
-          # you can easily get its UUID by accessing its extensionUuid
-          # field (look at the following example).
-          #   pkgs.gnomeExtensions.gsconnect.extensionUuid
+          pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
+          pkgs.gnomeExtensions.clipboard-indicator.extensionUuid
+          pkgs.gnomeExtensions.grand-theft-focus.extensionUuid
+          pkgs.gnomeExtensions.launch-new-instance.extensionUuid
           pkgs.gnomeExtensions.paperwm.extensionUuid
           pkgs.gnomeExtensions.vitals.extensionUuid
-          pkgs.gnomeExtensions.clipboard-indicator.extensionUuid
-          pkgs.gnomeExtensions.launch-new-instance.extensionUuid
-          pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
         ];
       };
 

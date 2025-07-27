@@ -102,34 +102,11 @@
     enable = true;
     # tip: use `dconf watch /`, then make changes in gui to capture what to add here.
     settings = {
-      "org/gnome/shell" = {
-        disable-user-extensions = false; # enables user extensions
-        enabled-extensions = [
-          # Put UUIDs of extensions that you want to enable here.
-          # If the extension you want to enable is packaged in nixpkgs,
-          # you can easily get its UUID by accessing its extensionUuid
-          # field (look at the following example).
-          #   pkgs.gnomeExtensions.gsconnect.extensionUuid
-          pkgs.gnomeExtensions.paperwm.extensionUuid
-          pkgs.gnomeExtensions.vitals.extensionUuid
-          pkgs.gnomeExtensions.clipboard-indicator.extensionUuid
-          pkgs.gnomeExtensions.launch-new-instance.extensionUuid
-          pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
-        ];
-      };
-
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         gtk-theme = "adw-gtk3-dark";
         enable-hot-corners = false;
         accent-color = "green";
-      };
- 
-      "org/gnome/settings-daemon/plugins/power" = {
-        sleep-inactive-ac-timeout=1800;
-        sleep-inactive-ac-type="nothing";
-        sleep-inactive-battery-timeout=1800;
-        sleep-inactive-battery-type="suspend";
       };
 
       "org/gnome/desktop/wm/keybindings" = {
@@ -175,20 +152,63 @@
         num-workspaces = 10;
         workspace-names = [ "Terminals" "Browsers" "Workspace 3" ];
       };
-
-      "org/gnome/pomodoro/preferences" = {
-        pomodoro-duration = 3000.0;
-        short-break-duration = 600.0;
+ 
+      "org/gnome/mutter" = {
+        overlay-key = "";
       };
 
-      "org/gnome/pomodoro/state" = {
-        timer-date = "2025-03-25T08:12:05+0000";
-        timer-elapsed = 0.0;
-        timer-paused = false;
-        timer-score = 0.0;
-        timer-state = "null";
-        timer-state-date = "2025-03-25T08:12:05+0000";
-        timer-state-duration = 0.0;
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+        ];
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        name = "toggle ulauncher from nix super-return";
+        command = "ulauncher toggle";
+        binding = "<Super>Return";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+        name = "toggle ulauncher from nix super-space";
+        command = "ulauncher toggle";
+        binding = "<Super>Space";
+      };
+
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-timeout=1800;
+        sleep-inactive-ac-type="nothing";
+        sleep-inactive-battery-timeout=1800;
+        sleep-inactive-battery-type="suspend";
+      };
+
+      "org/gnome/shell" = {
+        disable-user-extensions = false; # enables user extensions
+        enabled-extensions = [
+          # Put UUIDs of extensions that you want to enable here.
+          # If the extension you want to enable is packaged in nixpkgs,
+          # you can easily get its UUID by accessing its extensionUuid
+          # field (look at the following example).
+          #   pkgs.gnomeExtensions.gsconnect.extensionUuid
+          pkgs.gnomeExtensions.paperwm.extensionUuid
+          pkgs.gnomeExtensions.vitals.extensionUuid
+          pkgs.gnomeExtensions.clipboard-indicator.extensionUuid
+          pkgs.gnomeExtensions.launch-new-instance.extensionUuid
+          pkgs.gnomeExtensions.bing-wallpaper-changer.extensionUuid
+        ];
+      };
+
+      "org/gnome/shell/keybindings" = {
+        focus-active-notification = [];
+        shift-overview-down = [];
+        shift-overview-up = [];
+        switch-to-application-1 = [];
+        switch-to-application-2 = [];
+        switch-to-application-3 = [];
+        switch-to-application-4 = [];
+        toggle-application-view = [ "<Shift><Super>space" ];
+        toggle-message-tray = [];
       };
 
       "org/gnome/shell/extensions/bingwallpaper" = {
@@ -330,42 +350,6 @@
       "org/gnome/shell/extensions/weatherornot" = {
         position = "right";
       };
-
-      "org/gnome/shell/keybindings" = {
-        focus-active-notification = [];
-        shift-overview-down = [];
-        shift-overview-up = [];
-        switch-to-application-1 = [];
-        switch-to-application-2 = [];
-        switch-to-application-3 = [];
-        switch-to-application-4 = [];
-        toggle-application-view = [ "<Shift><Super>space" ];
-        toggle-message-tray = [];
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = [
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-        ];
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle ulauncher from nix super-return";
-        command = "ulauncher toggle";
-        binding = "<Super>Return";
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        name = "toggle ulauncher from nix super-space";
-        command = "ulauncher toggle";
-        binding = "<Super>Space";
-      };
-
-      "org/gnome/mutter" = {
-        overlay-key = "";
-      };
-
     };
   };
 

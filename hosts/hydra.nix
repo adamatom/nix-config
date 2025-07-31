@@ -60,6 +60,12 @@
     };
   };
 
+  virtualisation.virtualbox.host = {
+    enable = true;
+    enableExtensionPack = true;
+  };
+  users.extraGroups.vboxusers.members = [ "adam" ];
+
   networking.hostName = "hydra";
 
   # This value determines the NixOS release from which the default

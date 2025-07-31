@@ -107,6 +107,7 @@
         gtk-theme = "adw-gtk3-dark";
         enable-hot-corners = false;
         accent-color = "green";
+        show-battery-percentage = true;
       };
 
       "org/gnome/desktop/wm/keybindings" = {

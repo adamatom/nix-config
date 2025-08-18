@@ -152,7 +152,6 @@
 
       "org/gnome/desktop/wm/preferences" = {
         num-workspaces = 10;
-        workspace-names = [ "Terminals" "Browsers" "Workspace 3" ];
       };
  
       "org/gnome/mutter" = {
@@ -273,13 +272,13 @@
         background = "";
         color = "rgb(0,0,0)";
         index = 0;
-        name = "Terminals";
+        name = "Workspace 1";
         show-top-bar = true;
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces/f013fd95-1bcc-46d4-a92c-8fc51965a6e1" = {
         index = 1;
-        name = "Browsers";
+        name = "Workspace 2";
         show-position-bar = true;
         show-top-bar = true;
       };

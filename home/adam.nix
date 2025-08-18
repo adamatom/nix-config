@@ -25,6 +25,7 @@
     neovim
     nmap
     picocom
+    qemu
     ripgrep
     tmux
     tree

@@ -43,6 +43,7 @@
     kicad
     mpv
     saleae-logic-2
+    spotify
     ulauncher
 
     # Development tools

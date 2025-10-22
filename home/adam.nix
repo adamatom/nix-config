@@ -1,6 +1,17 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, nixgl, ... }:
 
+let
+  # Convenience: true when we’re on a generic Linux (i.e., non-NixOS) install.
+  onGenericLinux = (config.targets.genericLinux.enable or false);
+in
 {
+  # This is set by nixos, but not set on home-manager-only systems.
+  targets.genericLinux.enable = lib.mkDefault true;
+
+  # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
+  # On NixOS, leave it unset — wrappers become no-ops.
+  nixGL.packages = lib.mkIf onGenericLinux nixgl.packages.${pkgs.system};
+
   home.username = "adam";
   home.homeDirectory = "/home/adam";
 
@@ -102,7 +113,14 @@
       nix-direnv.enable = true;
       enableZshIntegration = true;
     };
-    firefox.enable = true;
+    firefox = {
+      enable = true;
+      package = config.lib.nixGL.wrap pkgs.firefox;
+    };
+    ghostty = {
+      enable = true;
+      package = config.lib.nixGL.wrap pkgs.ghostty;
+    };
     htop.enable = true;
   };
 

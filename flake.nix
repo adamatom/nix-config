@@ -6,9 +6,10 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }: 
+  outputs = { self, nixpkgs, nixos-hardware, home-manager, nixgl, ... }: 
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -16,6 +17,7 @@
       homeConfigurations.adam = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home/adam.nix ];
+        extraSpecialArgs = { inherit nixgl; };
       };
 
       nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {
@@ -29,6 +31,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.adam = import ./home/adam.nix;
+            home-manager.extraSpecialArgs = { inherit nixgl; };
           }
         ];
       };

@@ -88,6 +88,12 @@
     gnomeExtensions.vitals
   ];
 
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "discord"
+    "saleae-logic-2"
+    "spotify"
+  ];
+
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
   programs = {

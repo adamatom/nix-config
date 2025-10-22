@@ -10,7 +10,13 @@ sudo nixos-rebuild switch --flake '.#hydra'
 ## HomeManager
 
 When running this config on HomeManager inside of another Linux distribution,
-run:
+this command can be run initially to install home-manager and the apps defined
+in this flake:
+```
+nix run "nixpkgs#home-manager" -- switch --flake "./nix-config#adam"
+```
+
+Then after, update with:
 ```
 home-manager switch --flake ~/nix-config#adam
 ```

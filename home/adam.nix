@@ -65,14 +65,12 @@ in
 
         # GUI apps
         baobab
-        discord
-        kicad
         gitg
         mpv
         saleae-logic-2
-        slack
+        (wrapGL slack)
         spotify
-        ulauncher
+        (wrapGL ulauncher)
 
         # Development tools
         clang-analyzer
@@ -118,7 +116,7 @@ in
 
       # Conditionals:
       workPkgs     = lib.optionals atWork    [ (wrapGL pkgs.teams-for-linux) ];
-      personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) ];
+      personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
     in
       base ++ workPkgs ++ personalPkgs;
 

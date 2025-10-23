@@ -1,109 +1,136 @@
-{ config, pkgs, lib, nixgl, ... }:
+{ config, pkgs, lib, nixgl, atWork ? false, ... }:
 
 let
   # Convenience: true when we’re on a generic Linux (i.e., non-NixOS) install.
   onGenericLinux = (config.targets.genericLinux.enable or false);
+
+  # helper fn to save typing.
+  wrapGL = pkg: config.lib.nixGL.wrap pkg;
 in
 {
   # This is set by nixos, but not set on home-manager-only systems.
   targets.genericLinux.enable = lib.mkDefault true;
 
+  # Without using programs.zsh.enable, to get discoverable .desktop files in non-NixOS, we need the
+  # following settings, and this addition to your ~/.profile:
+  #   export XDG_DATA_DIRS="/home/your_user/.nix-profile/share:$XDG_DATA_DIRS"
+  xdg.enable = lib.mkIf onGenericLinux true;
+  xdg.mime.enable = lib.mkIf onGenericLinux true;
+
   # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
   # On NixOS, leave it unset — wrappers become no-ops.
   nixGL.packages = lib.mkIf onGenericLinux nixgl.packages.${pkgs.system};
 
-  home.username = "adam";
-  home.homeDirectory = "/home/adam";
+  home = {
+    username = "adam";
+    homeDirectory = "/home/adam";
+  };
 
   # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
-    zsh  # We dont want homemanager to manage the rc files of these yet
+  home.packages = 
+    let
+      base = with pkgs; [
+        # I dont want to give up my .zshrc yet, so I cant use programs.zsh.enable.
+        zsh
 
-    # CLI tools
-    bat
-    fd
-    file
-    fzf
-    gawk
-    git
-    git-lfs
-    gnupg
-    gnused
-    gnutar
-    jq
-    killall
-    mcfly
-    neovim
-    nmap
-    picocom
-    qemu
-    ripgrep
-    tmux
-    tree
-    wget
-    which
-    wl-clipboard
-    xz
-    zip unzip
-    zoxide
-    zstd
+        # CLI tools
+        bat
+        curlFull
+        fd
+        file
+        fzf
+        gawk
+        gitFull
+        git-lfs
+        gnupg
+        gnused
+        gnutar
+        jq
+        killall
+        mcfly
+        neovim
+        nmap
+        picocom
+        qemu
+        ripgrep
+        tmux
+        tree
+        wget
+        which
+        wl-clipboard
+        xz
+        zip unzip
+        zoxide
+        zstd
 
-    # GUI apps
-    alacritty
-    discord
-    kicad
-    mpv
-    saleae-logic-2
-    spotify
-    ulauncher
+        # GUI apps
+        baobab
+        discord
+        kicad
+        gitg
+        mpv
+        saleae-logic-2
+        slack
+        spotify
+        ulauncher
 
-    # Development tools
-    clang-analyzer
-    clang-tools
-    cmake
-    dtc
-    gcc
-    go
-    gopls
-    lua-language-server
-    markdownlint-cli
-    openocd
-    pkg-config
-    python313
-    python313Packages.python-lsp-server
-    rustup
-    universal-ctags
-    uv
+        # Development tools
+        clang-analyzer
+        clang-tools
+        cmake
+        dtc
+        gcc
+        go
+        gopls
+        lua-language-server
+        markdownlint-cli
+        openocd
+        pkg-config
+        python313
+        python313Packages.python-lsp-server
+        rustup
+        universal-ctags
+        uv
 
-    # Fonts
-    nerd-fonts."m+"
-    nerd-fonts.envy-code-r
-    nerd-fonts.fira-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.meslo-lg
-    nerd-fonts.monaspace
-    nerd-fonts.zed-mono
+        # Fonts
+        nerd-fonts."m+"
+        nerd-fonts.envy-code-r
+        nerd-fonts.fira-mono
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.meslo-lg
+        nerd-fonts.monaspace
+        nerd-fonts.zed-mono
 
-    # GTK theme
-    adw-gtk3
+        # GTK theme
+        adw-gtk3
 
-    # Spellchecking
-    hunspell hunspellDicts.en_US hunspellDicts.de_DE
+        # Spellchecking
+        hunspell hunspellDicts.en_US hunspellDicts.de_DE
 
-    # GNOME Shell Extensions (needed for the dconf settings to work)
-    gnomeExtensions.bing-wallpaper-changer
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.grand-theft-focus
-    gnomeExtensions.launch-new-instance
-    gnomeExtensions.paperwm
-    gnomeExtensions.vitals
-  ];
+        # GNOME Shell Extensions (needed for the dconf settings to work)
+        gnomeExtensions.bing-wallpaper-changer
+        gnomeExtensions.clipboard-history
+        gnomeExtensions.grand-theft-focus
+        gnomeExtensions.launch-new-instance
+        gnomeExtensions.paperwm
+        gnomeExtensions.resource-monitor
+      ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "discord"
-    "saleae-logic-2"
-    "spotify"
-  ];
+      # Conditionals:
+      workPkgs     = lib.optionals atWork    [ (wrapGL pkgs.teams-for-linux) ];
+      personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) ];
+    in
+      base ++ workPkgs ++ personalPkgs;
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) (
+      [
+        "discord"
+        "saleae-logic-2"
+        "slack"
+        "spotify"
+      ]
+    );
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
@@ -113,14 +140,17 @@ in
       nix-direnv.enable = true;
       enableZshIntegration = true;
     };
+
     firefox = {
       enable = true;
-      package = config.lib.nixGL.wrap pkgs.firefox;
+      package = wrapGL pkgs.firefox;
     };
+
     ghostty = {
       enable = true;
-      package = config.lib.nixGL.wrap pkgs.ghostty;
+      package = wrapGL pkgs.ghostty;
     };
+
     htop.enable = true;
   };
 

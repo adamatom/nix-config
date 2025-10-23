@@ -17,7 +17,19 @@
       homeConfigurations.adam = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home/adam.nix ];
-        extraSpecialArgs = { inherit nixgl; };
+        extraSpecialArgs = {
+          inherit nixgl;
+          atWork = false;
+        };
+      };
+
+      homeConfigurations.adamatwork = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./home/adam.nix ];
+        extraSpecialArgs = {
+          inherit nixgl;
+          atWork = true;
+        };
       };
 
       nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {

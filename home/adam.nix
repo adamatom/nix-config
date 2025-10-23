@@ -160,7 +160,7 @@ in
     settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
-        gtk-theme = "adw-gtk3-dark";
+        gtk-theme = if atWork then "Yaru-olive-dark" else "adw-gtk3-dark";
         enable-hot-corners = false;
         accent-color = "green";
         show-battery-percentage = true;

@@ -75,7 +75,7 @@ in
         tree
         wget
         which
-        wl-clipboard
+        xclip
         xz
         zip unzip
         zoxide

@@ -21,6 +21,24 @@ in
   # On NixOS, leave it unset — wrappers become no-ops.
   nixGL.packages = lib.mkIf onGenericLinux nixgl.packages.${pkgs.system};
 
+  # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
+  # we will end up mixing system Gnome libs with nix libs, and they usually don't agree.
+  # Explicitly scrub session-level exports that cause the mismatch
+  home.sessionVariablesExtra = lib.mkIf onGenericLinux ''
+    unset GIO_EXTRA_MODULES
+    unset GIO_MODULE_DIR
+    unset GSETTINGS_SCHEMA_DIR
+    unset GTK_PATH
+    unset GTK_IM_MODULE_FILE
+  '';
+
+  # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
+  # application via programs.<program>.enable that uses GTK.
+  home.sessionVariables = lib.mkIf onGenericLinux {
+    GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+    GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
+  };
+
   home = {
     username = "adam";
     homeDirectory = "/home/adam";

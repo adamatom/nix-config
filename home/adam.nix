@@ -88,7 +88,6 @@ in
         saleae-logic-2
         (wrapGL slack)
         spotify
-        (wrapGL ulauncher)
 
         # Development tools
         clang-analyzer
@@ -168,6 +167,11 @@ in
     };
 
     htop.enable = true;
+
+    rofi = {
+      enable = true;
+      theme = "Arc-Dark";
+    };
   };
 
   dconf = {
@@ -237,14 +241,14 @@ in
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle ulauncher from nix super-return";
-        command = "ulauncher toggle";
+        name = "toggle rofi from nix super-return";
+        command = "rofi -show drun";
         binding = "<Super>Return";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        name = "toggle ulauncher from nix super-space";
-        command = "ulauncher toggle";
+        name = "toggle rofi from nix super-space";
+        command = "rofi -show drun";
         binding = "<Super>Space";
       };
 
@@ -319,9 +323,6 @@ in
         vertical-margin-bottom = 0;
         window-gap = 8;
         window-switcher-preview-scale = 0.15;
-        winprops = [
-          ''{"wm_class":"ulauncher","scratch_layer":true}''
-        ];
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces" = {

@@ -21,6 +21,13 @@ in
   # On NixOS, leave it unset — wrappers become no-ops.
   nixGL.packages = lib.mkIf onGenericLinux nixgl.packages.${pkgs.system};
 
+  # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
+  # application via programs.<program>.enable that uses GTK.
+  home.sessionVariables = lib.mkIf onGenericLinux {
+    GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
+    GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
+  };
+
   # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
   # we will end up mixing system Gnome libs with nix libs, and they usually don't agree.
   # Explicitly scrub session-level exports that cause the mismatch
@@ -32,11 +39,15 @@ in
     unset GTK_IM_MODULE_FILE
   '';
 
-  # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
-  # application via programs.<program>.enable that uses GTK.
-  home.sessionVariables = lib.mkIf onGenericLinux {
-    GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
-    GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
+  # Ensure GNOME launcher can find Nix executables (like firefox). We also want GTK apps to find
+  # the system pixloaders and resources when we are not running on nixos.
+  home.file.".config/environment.d/20-ubuntu-hacks.conf" = lib.mkIf onGenericLinux {
+    text = ''
+      PATH=$HOME/.nix-profile/bin:$PATH
+      GDK_PIXBUF_MODULE_FILE=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+      GDK_PIXBUF_MODULEDIR=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+      XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share/gnome:/usr/share/ubuntu:/var/lib/snapd/desktop:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share
+    '';
   };
 
   home = {
@@ -124,7 +135,7 @@ in
 
         # GNOME Shell Extensions (needed for the dconf settings to work)
         gnomeExtensions.bing-wallpaper-changer
-        gnomeExtensions.clipboard-history
+        gnomeExtensions.clipboard-indicator
         gnomeExtensions.grand-theft-focus
         gnomeExtensions.launch-new-instance
         gnomeExtensions.paperwm
@@ -134,8 +145,10 @@ in
       # Conditionals:
       workPkgs     = lib.optionals atWork    [ (wrapGL pkgs.teams-for-linux) ];
       personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
+      # Getting rofi to play nice across Ubuntu System and nix isn't working. We rely on apt here.
+      nixonly = lib.optionals (!onGenericLinux) [ pkgs.rofi]; 
     in
-      base ++ workPkgs ++ personalPkgs;
+      base ++ workPkgs ++ personalPkgs ++ nixonly;
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) (
@@ -168,10 +181,6 @@ in
 
     htop.enable = true;
 
-    rofi = {
-      enable = true;
-      theme = "Arc-Dark";
-    };
   };
 
   dconf = {
@@ -267,7 +276,7 @@ in
           pkgs.gnomeExtensions.grand-theft-focus.extensionUuid
           pkgs.gnomeExtensions.launch-new-instance.extensionUuid
           pkgs.gnomeExtensions.paperwm.extensionUuid
-          pkgs.gnomeExtensions.vitals.extensionUuid
+          pkgs.gnomeExtensions.resource-monitor.extensionUuid
         ];
       };
 

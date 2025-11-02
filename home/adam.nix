@@ -189,6 +189,7 @@ in
     settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
+        cursor-theme = "Yaru"
         gtk-theme = if atWork then "Yaru-olive-dark" else "adw-gtk3-dark";
         enable-hot-corners = false;
         accent-color = "green";

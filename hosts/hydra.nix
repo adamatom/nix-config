@@ -1,29 +1,55 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+{ config, lib, modulesPath, ... }:
 
-{ config, pkgs, ... }:
-
+let
+  starboundServerPort = 21025;
+in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ../modules/hardware/hydra.nix
-      ../modules/features/remap-capslock.nix
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ../modules/features/remap-capslock.nix
+  ];
 
   features.remapCaps.enable = true;
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
+  };
 
-  boot.kernel.sysctl = {
-    "fs.mqueue.msg_max" = 16384;
-    "fs.mqueue.queues_max" = 1024;
-    "fs.mqueue.msgsize_max" = 8192;
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/104936c8-98eb-402e-a2c8-768e0bb94948";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/C8D3-2B03";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/896ae7bd-e06b-4a3b-b4b5-75ae79e2f9af"; }
+    ];
+
+  # Bootloader.
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+
+    kernel.sysctl = {
+      "fs.mqueue.msg_max" = 16384;
+      "fs.mqueue.queues_max" = 1024;
+      "fs.mqueue.msgsize_max" = 8192;
+    };
   };
 
   hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
     nvidia = {
       # Modesetting is required.
       modesetting.enable = true;
@@ -60,13 +86,20 @@
     };
   };
 
-  virtualisation.virtualbox.host = {
-    enable = true;
-    enableExtensionPack = true;
+  networking = {
+    hostName = "hydra";
+    firewall = {
+      allowedTCPPorts = [ starboundServerPort ];
+      allowedUDPPorts = [ starboundServerPort ];
+    };
+    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking (the
+    # default) this is the recommended approach. When using systemd-networkd it's still possible to
+    # use this option, but it's recommended to use it in conjunction with explicit per-interface
+    # declarations with `networking.interfaces.<interface>.useDHCP`.
+    useDHCP = lib.mkDefault true;
+    # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
+    # networking.interfaces.wlp82s0.useDHCP = lib.mkDefault true;
   };
-  users.extraGroups.vboxusers.members = [ "adam" ];
-
-  networking.hostName = "hydra";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

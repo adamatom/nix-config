@@ -1,8 +1,7 @@
-{ config, pkgs, lib, nixgl, atWork ? false, ... }:
+{ config, pkgs, lib, nixgl, atWork ? false, isNixOs ? false, ... }:
 
 let
-  # Convenience: true when we’re on a generic Linux (i.e., non-NixOS) install.
-  onGenericLinux = (config.targets.genericLinux.enable or false);
+  notNixOs = !isNixOs;
 
   # helper fn to save typing.
   wrapGL = pkg: config.lib.nixGL.wrap pkg;
@@ -14,16 +13,16 @@ in
   # Without using programs.zsh.enable, to get discoverable .desktop files in non-NixOS, we need the
   # following settings, and this addition to your ~/.profile:
   #   export XDG_DATA_DIRS="/home/your_user/.nix-profile/share:$XDG_DATA_DIRS"
-  xdg.enable = lib.mkIf onGenericLinux true;
-  xdg.mime.enable = lib.mkIf onGenericLinux true;
+  xdg.enable = lib.mkIf notNixOs true;
+  xdg.mime.enable = lib.mkIf notNixOs true;
 
   # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
   # On NixOS, leave it unset — wrappers become no-ops.
-  nixGL.packages = lib.mkIf onGenericLinux nixgl.packages.${pkgs.system};
+  nixGL.packages = lib.mkIf notNixOs nixgl.packages.${pkgs.system};
 
   # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
   # application via programs.<program>.enable that uses GTK.
-  home.sessionVariables = lib.mkIf onGenericLinux {
+  home.sessionVariables = lib.mkIf notNixOs {
     GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
     GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
   };
@@ -31,7 +30,7 @@ in
   # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
   # we will end up mixing system Gnome libs with nix libs, and they usually don't agree.
   # Explicitly scrub session-level exports that cause the mismatch
-  home.sessionVariablesExtra = lib.mkIf onGenericLinux ''
+  home.sessionVariablesExtra = lib.mkIf notNixOs ''
     unset GIO_EXTRA_MODULES
     unset GIO_MODULE_DIR
     unset GSETTINGS_SCHEMA_DIR
@@ -42,7 +41,7 @@ in
 
   # Ensure GNOME launcher can find Nix executables (like firefox). We also want GTK apps to find
   # the system pixloaders and resources when we are not running on nixos.
-  home.file.".config/environment.d/20-ubuntu-hacks.conf" = lib.mkIf onGenericLinux {
+  home.file.".config/environment.d/20-ubuntu-hacks.conf" = lib.mkIf notNixOs {
     text = ''
       PATH=$HOME/.nix-profile/bin:$PATH
       GDK_PIXBUF_MODULE_FILE=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
@@ -100,6 +99,7 @@ in
         saleae-logic-2
         (wrapGL slack)
         spotify
+        (wrapGL ulauncher)
 
         # Development tools
         clang-analyzer
@@ -146,20 +146,8 @@ in
       # Conditionals:
       workPkgs     = lib.optionals atWork    [ (wrapGL pkgs.teams-for-linux) ];
       personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
-      # Getting rofi to play nice across Ubuntu System and nix isn't working. We rely on apt here.
-      nixonly = lib.optionals (!onGenericLinux) [ pkgs.rofi]; 
     in
-      base ++ workPkgs ++ personalPkgs ++ nixonly;
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) (
-      [
-        "discord"
-        "saleae-logic-2"
-        "slack"
-        "spotify"
-      ]
-    );
+      base ++ workPkgs ++ personalPkgs;
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
@@ -190,8 +178,7 @@ in
     settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
-        cursor-theme = "Yaru";
-        gtk-theme = if atWork then "Yaru-olive-dark" else "adw-gtk3-dark";
+        gtk-theme = "Yaru-olive-dark";
         enable-hot-corners = false;
         accent-color = "green";
         show-battery-percentage = true;
@@ -252,14 +239,14 @@ in
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle rofi from nix super-return";
-        command = "rofi -show drun";
+        name = "toggle ulauncher from nix super-return";
+        command = "ulauncher toggle";
         binding = "<Super>Return";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        name = "toggle rofi from nix super-space";
-        command = "rofi -show drun";
+        name = "toggle ulauncher from nix super-space";
+        command = "ulauncher toggle";
         binding = "<Super>Space";
       };
 
@@ -334,6 +321,9 @@ in
         vertical-margin-bottom = 0;
         window-gap = 8;
         window-switcher-preview-scale = 0.15;
+        winprops = [
+          ''{"wm_class":"ulauncher","scratch_layer":true}''
+        ];
       };
 
       "org/gnome/shell/extensions/paperwm/workspaces" = {

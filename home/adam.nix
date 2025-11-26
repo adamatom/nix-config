@@ -25,6 +25,7 @@ in
   home.sessionVariables = lib.mkIf notNixOs {
     GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
     GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
+    XCURSOR_THEME="Yaru";
   };
 
   # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
@@ -36,7 +37,6 @@ in
     unset GSETTINGS_SCHEMA_DIR
     unset GTK_PATH
     unset GTK_IM_MODULE_FILE
-    XCURSOR_THEME = "Yaru";
   '';
 
   # Ensure GNOME launcher can find Nix executables (like firefox). We also want GTK apps to find
@@ -47,6 +47,7 @@ in
       GDK_PIXBUF_MODULE_FILE=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
       GDK_PIXBUF_MODULEDIR=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share/gnome:/usr/share/ubuntu:/var/lib/snapd/desktop:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share
+      XCURSOR_THEME=Yaru
     '';
   };
 
@@ -118,6 +119,9 @@ in
         rustup
         universal-ctags
         uv
+
+        # system libs
+        libxcrypt
 
         # Fonts
         nerd-fonts."m+"

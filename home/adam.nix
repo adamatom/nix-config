@@ -43,7 +43,7 @@ in
   # the system pixloaders and resources when we are not running on nixos.
   home.file.".config/environment.d/20-ubuntu-hacks.conf" = lib.mkIf notNixOs {
     text = ''
-      PATH=$HOME/.nix-profile/bin:$PATH
+      PATH=/home/adam/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
       GDK_PIXBUF_MODULE_FILE=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
       GDK_PIXBUF_MODULEDIR=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share/gnome:/usr/share/ubuntu:/var/lib/snapd/desktop:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share
@@ -100,7 +100,6 @@ in
         saleae-logic-2
         (wrapGL slack)
         spotify
-        (wrapGL ulauncher)
 
         # Development tools
         clang-analyzer
@@ -148,10 +147,11 @@ in
       ];
 
       # Conditionals:
-      workPkgs     = lib.optionals atWork    [ (wrapGL pkgs.teams-for-linux) ];
-      personalPkgs = lib.optionals (!atWork) [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
+      workPkgs     = lib.optionals atWork      [ (wrapGL pkgs.teams-for-linux) ];
+      personalPkgs = lib.optionals (!atWork)   [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
+      NixOsPkgs    = lib.optionals (!notNixOs) [ pkgs.ulauncher ];
     in
-      base ++ workPkgs ++ personalPkgs;
+      base ++ workPkgs ++ personalPkgs ++ NixOsPkgs;
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.

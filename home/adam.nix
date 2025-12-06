@@ -149,7 +149,7 @@ in
       # Conditionals:
       workPkgs     = lib.optionals atWork      [ (wrapGL pkgs.teams-for-linux) ];
       personalPkgs = lib.optionals (!atWork)   [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
-      NixOsPkgs    = lib.optionals (!notNixOs) [ pkgs.ulauncher ];
+      NixOsPkgs    = lib.optionals (!notNixOs) [ pkgs.rofi ];
     in
       base ++ workPkgs ++ personalPkgs ++ NixOsPkgs;
 
@@ -243,14 +243,14 @@ in
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle ulauncher from nix super-return";
-        command = "ulauncher toggle";
+        name = "toggle rofi super-return";
+        command = "rofi -show drun";
         binding = "<Super>Return";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        name = "toggle ulauncher from nix super-space";
-        command = "ulauncher toggle";
+        name = "toggle rofi super-space";
+        command = "rofi -show drun";
         binding = "<Super>Space";
       };
 

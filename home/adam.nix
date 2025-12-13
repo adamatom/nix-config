@@ -66,6 +66,7 @@ in
         # CLI tools
         bat
         curlFull
+        diff-so-fancy
         fd
         file
         fzf

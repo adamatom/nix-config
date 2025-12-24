@@ -18,7 +18,7 @@ in
 
   # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
   # On NixOS, leave it unset — wrappers become no-ops.
-  nixGL.packages = lib.mkIf notNixOs nixgl.packages.${pkgs.system};
+  targets.genericLinux.nixGL.packages = lib.mkIf notNixOs nixgl.packages;
 
   # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
   # application via programs.<program>.enable that uses GTK.
@@ -116,7 +116,8 @@ in
         pkg-config
         python313
         python313Packages.python-lsp-server
-        rustup
+        rustc
+        cargo
         universal-ctags
         uv
 

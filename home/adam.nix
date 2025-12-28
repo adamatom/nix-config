@@ -237,25 +237,6 @@ in
         overlay-key = "";
       };
 
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = [
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-        ];
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        name = "toggle rofi super-return";
-        command = "rofi -show drun";
-        binding = "<Super>Return";
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        name = "toggle rofi super-space";
-        command = "rofi -show drun";
-        binding = "<Super>Space";
-      };
-
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-timeout=1800;
         sleep-inactive-ac-type="nothing";
@@ -285,6 +266,7 @@ in
         switch-to-application-4 = [];
         toggle-application-view = [ "<Shift><Super>space" ];
         toggle-message-tray = [];
+        toggle-overlay = [ "<Super>space" ];
       };
 
       "org/gnome/shell/extensions/bingwallpaper" = {

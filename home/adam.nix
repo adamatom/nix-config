@@ -99,7 +99,7 @@ in
         gitg
         mpv
         saleae-logic-2
-        (wrapGL slack)
+        slack
         spotify
 
         # Development tools

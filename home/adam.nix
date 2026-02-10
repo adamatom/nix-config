@@ -65,6 +65,7 @@ in
 
         # CLI tools
         bat
+        codex
         curlFull
         diff-so-fancy
         fd

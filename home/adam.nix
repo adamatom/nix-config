@@ -178,6 +178,23 @@ in
 
   };
 
+  # Override the default ghostty desktop entry, which sidesteps the wrapgl wrapping.
+  xdg.desktopEntries = lib.mkIf notNixOs {
+    "com.mitchellh.ghostty" = {
+      name = "Ghostty";
+      comment = "A terminal emulator";
+      exec = "${config.programs.ghostty.package}/bin/ghostty --gtk-single-instance=true";
+      icon = "com.mitchellh.ghostty";
+      categories = [ "System" "TerminalEmulator" ];
+      terminal = false;
+      startupNotify = true;
+      settings = {
+        StartupWMClass = "com.mitchellh.ghostty";
+        DBusActivatable = "false";
+      };
+    };
+  };
+
   dconf = {
     enable = true;
     # tip: use `dconf watch /`, then make changes in gui to capture what to add here.

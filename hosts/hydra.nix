@@ -2,6 +2,7 @@
 
 let
   starboundServerPort = 21025;
+  palwordServerPort = 8211;
 in
 {
   imports = [
@@ -89,8 +90,8 @@ in
   networking = {
     hostName = "hydra";
     firewall = {
-      allowedTCPPorts = [ starboundServerPort ];
-      allowedUDPPorts = [ starboundServerPort ];
+      allowedTCPPorts = [ starboundServerPort palwordServerPort ];
+      allowedUDPPorts = [ starboundServerPort palwordServerPort ];
     };
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking (the
     # default) this is the recommended approach. When using systemd-networkd it's still possible to

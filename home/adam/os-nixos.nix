@@ -2,6 +2,15 @@
 
 {
   xdg.desktopEntries = {
+    "org.prismlauncher.PrismLauncher" = {
+      name = "Prism Launcher";
+      comment = "Minecraft launcher";
+      exec = "prismlauncher-env";
+      icon = "prismlauncher";
+      categories = [ "Game" ];
+      terminal = false;
+      startupNotify = true;
+    };
     "minecraft-1.21.11" = {
       name = "Minecraft 1.21.11";
       comment = "Launch Minecraft";

@@ -1,71 +1,17 @@
-{ config, pkgs, lib, nixgl, atWork ? false, isNixOs ? false, ... }:
+{ config, pkgs, lib, ... }:
 
 let
-  notNixOs = !isNixOs;
-
   # helper fn to save typing.
   wrapGL = pkg: config.lib.nixGL.wrap pkg;
-
-  prismWithEnv = pkgs.writeShellScriptBin "prismlauncher-env" ''
-    exec env \
-      LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib" \
-      __GLX_VENDOR_LIBRARY_NAME="nvidia" \
-      __EGL_VENDOR_LIBRARY_FILENAMES="/run/opengl-driver/share/glvnd/egl_vendor.d/50_nvidia.json" \
-      ${pkgs.prismlauncher}/bin/prismlauncher "$@"
-  '';
 in
 {
-  # This is set by nixos, but not set on home-manager-only systems.
-  targets.genericLinux.enable = lib.mkDefault true;
-
-  # Without using programs.zsh.enable, to get discoverable .desktop files in non-NixOS, we need the
-  # following settings, and this addition to your ~/.profile:
-  #   export XDG_DATA_DIRS="/home/your_user/.nix-profile/share:$XDG_DATA_DIRS"
-  xdg.enable = lib.mkIf notNixOs true;
-  xdg.mime.enable = lib.mkIf notNixOs true;
-
-  # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
-  # On NixOS, leave it unset — wrappers become no-ops.
-  targets.genericLinux.nixGL.packages = lib.mkIf notNixOs nixgl.packages;
-
-  # On non-NixOS, we need to override the pixbuf loaders. These are set by nix when we include an
-  # application via programs.<program>.enable that uses GTK.
-  home.sessionVariables = lib.mkIf notNixOs {
-    GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
-    GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
-    XCURSOR_THEME="Yaru";
-  };
-
-  # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
-  # we will end up mixing system Gnome libs with nix libs, and they usually don't agree.
-  # Explicitly scrub session-level exports that cause the mismatch
-  home.sessionVariablesExtra = lib.mkIf notNixOs ''
-    unset GIO_EXTRA_MODULES
-    unset GIO_MODULE_DIR
-    unset GSETTINGS_SCHEMA_DIR
-    unset GTK_PATH
-    unset GTK_IM_MODULE_FILE
-  '';
-
-  # Ensure GNOME launcher can find Nix executables (like firefox). We also want GTK apps to find
-  # the system pixloaders and resources when we are not running on nixos.
-  home.file.".config/environment.d/20-ubuntu-hacks.conf" = lib.mkIf notNixOs {
-    text = ''
-      PATH=/home/adam/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
-      GDK_PIXBUF_MODULE_FILE=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
-      GDK_PIXBUF_MODULEDIR=/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
-      XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share/gnome:/usr/share/ubuntu:/var/lib/snapd/desktop:$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share
-      XCURSOR_THEME=Yaru
-    '';
-  };
-
   home = {
     username = "adam";
     homeDirectory = "/home/adam";
   };
 
   # Packages that should be installed to the user profile.
-  home.packages = 
+  home.packages =
     let
       base = with pkgs; [
         # I dont want to give up my .zshrc yet, so I cant use programs.zsh.enable.
@@ -157,11 +103,8 @@ in
         gnomeExtensions.resource-monitor
       ];
 
-      # Conditionals:
-      workPkgs     = lib.optionals atWork      [ (wrapGL pkgs.teams-for-linux) ];
-      personalPkgs = lib.optionals (!atWork)   [ pkgs.discord pkgs.kicad pkgs.prismlauncher ];
     in
-      base ++ workPkgs ++ personalPkgs;
+      base;
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
@@ -183,60 +126,6 @@ in
     };
 
     htop.enable = true;
-
-  };
-
-  # Override the default ghostty desktop entry, which sidesteps the wrapgl wrapping.
-  xdg.desktopEntries = lib.mkMerge [
-    (lib.mkIf notNixOs {
-      "com.mitchellh.ghostty" = {
-        name = "Ghostty";
-        comment = "A terminal emulator";
-        exec = "${config.programs.ghostty.package}/bin/ghostty --gtk-single-instance=true";
-        icon = "com.mitchellh.ghostty";
-        categories = [ "System" "TerminalEmulator" ];
-        terminal = false;
-        startupNotify = true;
-        settings = {
-          StartupWMClass = "com.mitchellh.ghostty";
-          DBusActivatable = "false";
-        };
-      };
-    })
-    (lib.mkIf isNixOs {
-      "org.prismlauncher.PrismLauncher" = {
-        name = "Prism Launcher";
-        comment = "Minecraft launcher";
-        exec = "${prismWithEnv}/bin/prismlauncher-env";
-        icon = "prismlauncher";
-        categories = [ "Game" ];
-        terminal = false;
-        startupNotify = true;
-      };
-      "minecraft-1.21.11" = {
-        name = "Minecraft 1.21.11";
-        comment = "Launch Minecraft";
-        exec = "${prismWithEnv}/bin/prismlauncher-env --launch \"1.21.11\"";
-        icon = "minecraft-1.21.11";
-        categories = [ "Game" ];
-        terminal = false;
-        startupNotify = true;
-      };
-    })
-  ];
-
-  xdg.dataFile = lib.mkIf isNixOs {
-    "icons/hicolor/scalable/apps/minecraft-1.21.11.svg".text = ''
-      <?xml version="1.0" encoding="UTF-8"?>
-      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-        <rect width="128" height="128" fill="#4caf50"/>
-        <rect x="24" y="28" width="32" height="32" fill="#0a0a0a"/>
-        <rect x="72" y="28" width="32" height="32" fill="#0a0a0a"/>
-        <rect x="40" y="72" width="16" height="20" fill="#0a0a0a"/>
-        <rect x="72" y="72" width="16" height="20" fill="#0a0a0a"/>
-        <rect x="56" y="80" width="16" height="12" fill="#0a0a0a"/>
-      </svg>
-    '';
   };
 
   dconf = {
@@ -293,7 +182,7 @@ in
       "org/gnome/desktop/wm/preferences" = {
         num-workspaces = 10;
       };
- 
+
       "org/gnome/mutter" = {
         overlay-key = "";
       };
@@ -325,9 +214,9 @@ in
         switch-to-application-2 = [];
         switch-to-application-3 = [];
         switch-to-application-4 = [];
-        toggle-application-view = [ "<Shift><Super>space" ];
+        toggle-application-view = [ "<Super>space" ];
         toggle-message-tray = [];
-        toggle-overlay = [ "<Super>space" ];
+        toggle-overlay = [];
       };
 
       "org/gnome/shell/extensions/bingwallpaper" = {

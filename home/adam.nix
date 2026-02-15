@@ -5,6 +5,14 @@ let
 
   # helper fn to save typing.
   wrapGL = pkg: config.lib.nixGL.wrap pkg;
+
+  prismWithEnv = pkgs.writeShellScriptBin "prismlauncher-env" ''
+    exec env \
+      LD_LIBRARY_PATH="/run/opengl-driver/lib:/run/opengl-driver-32/lib" \
+      __GLX_VENDOR_LIBRARY_NAME="nvidia" \
+      __EGL_VENDOR_LIBRARY_FILENAMES="/run/opengl-driver/share/glvnd/egl_vendor.d/50_nvidia.json" \
+      ${pkgs.prismlauncher}/bin/prismlauncher "$@"
+  '';
 in
 {
   # This is set by nixos, but not set on home-manager-only systems.
@@ -151,10 +159,9 @@ in
 
       # Conditionals:
       workPkgs     = lib.optionals atWork      [ (wrapGL pkgs.teams-for-linux) ];
-      personalPkgs = lib.optionals (!atWork)   [ (wrapGL pkgs.discord) (wrapGL pkgs.kicad) ];
-      NixOsPkgs    = lib.optionals (!notNixOs) [ pkgs.rofi ];
+      personalPkgs = lib.optionals (!atWork)   [ pkgs.discord pkgs.kicad pkgs.prismlauncher ];
     in
-      base ++ workPkgs ++ personalPkgs ++ NixOsPkgs;
+      base ++ workPkgs ++ personalPkgs;
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
@@ -180,20 +187,56 @@ in
   };
 
   # Override the default ghostty desktop entry, which sidesteps the wrapgl wrapping.
-  xdg.desktopEntries = lib.mkIf notNixOs {
-    "com.mitchellh.ghostty" = {
-      name = "Ghostty";
-      comment = "A terminal emulator";
-      exec = "${config.programs.ghostty.package}/bin/ghostty --gtk-single-instance=true";
-      icon = "com.mitchellh.ghostty";
-      categories = [ "System" "TerminalEmulator" ];
-      terminal = false;
-      startupNotify = true;
-      settings = {
-        StartupWMClass = "com.mitchellh.ghostty";
-        DBusActivatable = "false";
+  xdg.desktopEntries = lib.mkMerge [
+    (lib.mkIf notNixOs {
+      "com.mitchellh.ghostty" = {
+        name = "Ghostty";
+        comment = "A terminal emulator";
+        exec = "${config.programs.ghostty.package}/bin/ghostty --gtk-single-instance=true";
+        icon = "com.mitchellh.ghostty";
+        categories = [ "System" "TerminalEmulator" ];
+        terminal = false;
+        startupNotify = true;
+        settings = {
+          StartupWMClass = "com.mitchellh.ghostty";
+          DBusActivatable = "false";
+        };
       };
-    };
+    })
+    (lib.mkIf isNixOs {
+      "org.prismlauncher.PrismLauncher" = {
+        name = "Prism Launcher";
+        comment = "Minecraft launcher";
+        exec = "${prismWithEnv}/bin/prismlauncher-env";
+        icon = "prismlauncher";
+        categories = [ "Game" ];
+        terminal = false;
+        startupNotify = true;
+      };
+      "minecraft-1.21.11" = {
+        name = "Minecraft 1.21.11";
+        comment = "Launch Minecraft";
+        exec = "${prismWithEnv}/bin/prismlauncher-env --launch \"1.21.11\"";
+        icon = "minecraft-1.21.11";
+        categories = [ "Game" ];
+        terminal = false;
+        startupNotify = true;
+      };
+    })
+  ];
+
+  xdg.dataFile = lib.mkIf isNixOs {
+    "icons/hicolor/scalable/apps/minecraft-1.21.11.svg".text = ''
+      <?xml version="1.0" encoding="UTF-8"?>
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+        <rect width="128" height="128" fill="#4caf50"/>
+        <rect x="24" y="28" width="32" height="32" fill="#0a0a0a"/>
+        <rect x="72" y="28" width="32" height="32" fill="#0a0a0a"/>
+        <rect x="40" y="72" width="16" height="20" fill="#0a0a0a"/>
+        <rect x="72" y="72" width="16" height="20" fill="#0a0a0a"/>
+        <rect x="56" y="80" width="16" height="12" fill="#0a0a0a"/>
+      </svg>
+    '';
   };
 
   dconf = {

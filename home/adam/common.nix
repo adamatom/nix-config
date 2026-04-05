@@ -19,6 +19,7 @@ in
 
         # CLI tools
         bat
+        claude-code
         codex
         curlFull
         diff-so-fancy
@@ -26,6 +27,7 @@ in
         file
         fzf
         gawk
+        gemini-cli
         gitFull
         git-lfs
         gnupg
@@ -67,6 +69,7 @@ in
         gopls
         lua-language-server
         markdownlint-cli
+        marksman
         openocd
         pkg-config
         python313

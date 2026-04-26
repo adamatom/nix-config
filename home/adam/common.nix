@@ -39,6 +39,7 @@ in
         neovim
         nmap
         picocom
+        prettier
         qemu
         ripgrep
         tmux
@@ -76,6 +77,8 @@ in
         python313Packages.python-lsp-server
         rustc
         cargo
+        tree-sitter
+        nodejs   # tree-sitter CLI shells out to node for some grammars' generate step
         universal-ctags
         uv
 

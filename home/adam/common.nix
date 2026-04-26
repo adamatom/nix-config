@@ -124,6 +124,7 @@ in
     firefox = {
       enable = true;
       package = wrapGL pkgs.firefox;
+      configPath = ".mozilla/firefox";
     };
 
     ghostty = {

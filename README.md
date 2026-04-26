@@ -1,5 +1,13 @@
 # NixOS + HomeManager config
 
+## Quickstart
+
+Updating everything, home-manager:
+```
+nix flake update
+home-manager switch --flake "./#adam"
+```
+
 ## NixOS
 When running from NixOS, the home-manager config is loaded automatically. To
 switch both NixOS and home-manager config, run:

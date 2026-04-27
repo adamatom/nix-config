@@ -9,6 +9,9 @@
   #   export XDG_DATA_DIRS="/home/your_user/.nix-profile/share:$XDG_DATA_DIRS"
   xdg.enable = true;
   xdg.mime.enable = true;
+  xdg.configFile."nix/nix.conf".text = ''
+    experimental-features = nix-command flakes
+  '';
 
   # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
   # On NixOS, leave it unset — wrappers become no-ops.

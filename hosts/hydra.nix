@@ -1,4 +1,9 @@
-{ config, lib, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 
 let
   starboundServerPort = 21025;
@@ -13,26 +18,35 @@ in
   features.remapCaps.enable = true;
 
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "nvme"
+      "usb_storage"
+      "sd_mod"
+      "rtsx_pci_sdmmc"
+    ];
     initrd.kernelModules = [ ];
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
   };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/104936c8-98eb-402e-a2c8-768e0bb94948";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/104936c8-98eb-402e-a2c8-768e0bb94948";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/C8D3-2B03";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/896ae7bd-e06b-4a3b-b4b5-75ae79e2f9af"; }
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/C8D3-2B03";
+    fsType = "vfat";
+    options = [
+      "fmask=0077"
+      "dmask=0077"
     ];
+  };
+
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/896ae7bd-e06b-4a3b-b4b5-75ae79e2f9af"; }
+  ];
 
   # Bootloader.
   boot = {
@@ -57,7 +71,7 @@ in
 
       # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
       # Enable this if you have graphical corruption issues or application crashes after waking
-      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
       # of just the bare essentials.
       powerManagement.enable = true;
 
@@ -67,15 +81,15 @@ in
 
       # Use the NVidia open source kernel module (not to be confused with the
       # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of 
-      # supported GPUs is at: 
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+      # Support is limited to the Turing and later architectures. Full list of
+      # supported GPUs is at:
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       # Only available from driver 515.43.04+
       open = false;
 
       # Enable the Nvidia settings menu,
-          # accessible via `nvidia-settings`.
-          nvidiaSettings = true;
+      # accessible via `nvidia-settings`.
+      nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -90,8 +104,14 @@ in
   networking = {
     hostName = "hydra";
     firewall = {
-      allowedTCPPorts = [ starboundServerPort palwordServerPort ];
-      allowedUDPPorts = [ starboundServerPort palwordServerPort ];
+      allowedTCPPorts = [
+        starboundServerPort
+        palwordServerPort
+      ];
+      allowedUDPPorts = [
+        starboundServerPort
+        palwordServerPort
+      ];
     };
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking (the
     # default) this is the recommended approach. When using systemd-networkd it's still possible to

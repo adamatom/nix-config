@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 let
   # helper fn to save typing.
@@ -11,106 +11,104 @@ in
   };
 
   # Packages that should be installed to the user profile.
-  home.packages =
-    let
-      base = with pkgs; [
-        # I dont want to give up my .zshrc yet, so I cant use programs.zsh.enable.
-        zsh
+  home.packages = with pkgs; [
+    # I dont want to give up my .zshrc yet, so I cant use programs.zsh.enable.
+    zsh
 
-        # CLI tools
-        bat
-        claude-code
-        codex
-        curlFull
-        diff-so-fancy
-        fd
-        file
-        fzf
-        gawk
-        gemini-cli
-        gitFull
-        git-lfs
-        gnupg
-        gnused
-        gnutar
-        jq
-        killall
-        mcfly
-        neovim
-        nmap
-        picocom
-        prettier
-        qemu
-        ripgrep
-        tmux
-        tree
-        wget
-        which
-        xclip
-        xz
-        zip unzip
-        zoxide
-        zstd
+    # CLI tools
+    bat
+    claude-code
+    codex
+    curlFull
+    diff-so-fancy
+    fd
+    file
+    fzf
+    gawk
+    gemini-cli
+    gitFull
+    git-lfs
+    gnupg
+    gnused
+    gnutar
+    jq
+    killall
+    mcfly
+    neovim
+    nmap
+    picocom
+    prettier
+    qemu
+    ripgrep
+    tmux
+    tree
+    wget
+    which
+    xclip
+    xz
+    zip
+    unzip
+    zoxide
+    zstd
 
-        # GUI apps
-        baobab
-        gitg
-        mpv
-        saleae-logic-2
-        slack
-        spotify
+    # GUI apps
+    baobab
+    gitg
+    saleae-logic-2
+    slack
+    spotify
 
-        # Development tools
-        clang-analyzer
-        clang-tools
-        cmake
-        dtc
-        gcc
-        go
-        gopls
-        lua-language-server
-        markdownlint-cli
-        marksman
-        openocd
-        pkg-config
-        python313
-        python313Packages.python-lsp-server
-        rustc
-        cargo
-        tree-sitter
-        nodejs   # tree-sitter CLI shells out to node for some grammars' generate step
-        universal-ctags
-        uv
+    # Development tools
+    clang-analyzer
+    clang-tools
+    cmake
+    dtc
+    gcc
+    go
+    gopls
+    lua-language-server
+    markdownlint-cli
+    marksman
+    nil
+    openocd
+    pkg-config
+    python313
+    python313Packages.python-lsp-server
+    rustc
+    cargo
+    tree-sitter
+    nodejs # tree-sitter CLI shells out to node for some grammars' generate step
+    universal-ctags
+    uv
 
-        # system libs
-        libxcrypt
+    # system libs
+    libxcrypt
 
-        # Fonts
-        nerd-fonts."m+"
-        nerd-fonts.envy-code-r
-        nerd-fonts.fira-mono
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.meslo-lg
-        nerd-fonts.monaspace
-        nerd-fonts.zed-mono
+    # Fonts
+    nerd-fonts."m+"
+    nerd-fonts.envy-code-r
+    nerd-fonts.fira-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.meslo-lg
+    nerd-fonts.monaspace
+    nerd-fonts.zed-mono
 
-        # GTK theme
-        adw-gtk3
+    # GTK theme
+    adw-gtk3
 
-        # Spellchecking
-        hunspell hunspellDicts.en_US hunspellDicts.de_DE
+    # Spellchecking
+    hunspell
+    hunspellDicts.en_US
+    hunspellDicts.de_DE
 
-        # GNOME Shell Extensions (needed for the dconf settings to work)
-        gnomeExtensions.bing-wallpaper-changer
-        gnomeExtensions.clipboard-indicator
-        gnomeExtensions.grand-theft-focus
-        gnomeExtensions.launch-new-instance
-        gnomeExtensions.paperwm
-        gnomeExtensions.resource-monitor
-      ];
-
-    in
-      base;
+    # GNOME Shell Extensions (needed for the dconf settings to work)
+    gnomeExtensions.bing-wallpaper-changer
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.grand-theft-focus
+    gnomeExtensions.launch-new-instance
+    gnomeExtensions.paperwm
+    gnomeExtensions.resource-monitor
+  ];
 
   # Install programs with more complete OS integration (desktop files, etc).
   # programs.pkg.enable is prioritized over pkgs.pkg if it exists.
@@ -148,42 +146,42 @@ in
       };
 
       "org/gnome/desktop/wm/keybindings" = {
-        begin-move = [];
-        begin-resize = [];
-        close = [];
-        minimize = [];
-        move-to-monitor-down = [];
-        move-to-monitor-left = [];
-        move-to-monitor-right = [];
-        move-to-monitor-up = [];
+        begin-move = [ ];
+        begin-resize = [ ];
+        close = [ ];
+        minimize = [ ];
+        move-to-monitor-down = [ ];
+        move-to-monitor-left = [ ];
+        move-to-monitor-right = [ ];
+        move-to-monitor-up = [ ];
         move-to-workspace-1 = [ "<Shift><Super>1" ];
         move-to-workspace-2 = [ "<Shift><Super>2" ];
         move-to-workspace-3 = [ "<Shift><Super>3" ];
         move-to-workspace-4 = [ "<Shift><Super>4" ];
-        move-to-workspace-down = [];
-        move-to-workspace-last = [];
-        move-to-workspace-left = [];
-        move-to-workspace-right = [];
-        move-to-workspace-up = [];
-        show-desktop = [];
-        switch-applications = [];
-        switch-applications-backward = [];
-        switch-group = [];
-        switch-group-backward = [];
-        switch-input-source = [];
-        switch-input-source-backward = [];
-        switch-panels = [];
-        switch-panels-backward = [];
+        move-to-workspace-down = [ ];
+        move-to-workspace-last = [ ];
+        move-to-workspace-left = [ ];
+        move-to-workspace-right = [ ];
+        move-to-workspace-up = [ ];
+        show-desktop = [ ];
+        switch-applications = [ ];
+        switch-applications-backward = [ ];
+        switch-group = [ ];
+        switch-group-backward = [ ];
+        switch-input-source = [ ];
+        switch-input-source-backward = [ ];
+        switch-panels = [ ];
+        switch-panels-backward = [ ];
         switch-to-workspace-1 = [ "<Super>1" ];
         switch-to-workspace-2 = [ "<Super>2" ];
         switch-to-workspace-3 = [ "<Super>3" ];
         switch-to-workspace-4 = [ "<Super>4" ];
-        switch-to-workspace-last = [];
-        switch-to-workspace-left = [];
-        switch-to-workspace-right = [];
-        switch-windows = [];
-        switch-windows-backward = [];
-        toggle-maximized = [];
+        switch-to-workspace-last = [ ];
+        switch-to-workspace-left = [ ];
+        switch-to-workspace-right = [ ];
+        switch-windows = [ ];
+        switch-windows-backward = [ ];
+        toggle-maximized = [ ];
       };
 
       "org/gnome/desktop/wm/preferences" = {
@@ -195,10 +193,10 @@ in
       };
 
       "org/gnome/settings-daemon/plugins/power" = {
-        sleep-inactive-ac-timeout=1800;
-        sleep-inactive-ac-type="nothing";
-        sleep-inactive-battery-timeout=1800;
-        sleep-inactive-battery-type="suspend";
+        sleep-inactive-ac-timeout = 1800;
+        sleep-inactive-ac-type = "nothing";
+        sleep-inactive-battery-timeout = 1800;
+        sleep-inactive-battery-type = "suspend";
       };
 
       "org/gnome/shell" = {
@@ -214,16 +212,16 @@ in
       };
 
       "org/gnome/shell/keybindings" = {
-        focus-active-notification = [];
-        shift-overview-down = [];
-        shift-overview-up = [];
-        switch-to-application-1 = [];
-        switch-to-application-2 = [];
-        switch-to-application-3 = [];
-        switch-to-application-4 = [];
+        focus-active-notification = [ ];
+        shift-overview-down = [ ];
+        shift-overview-up = [ ];
+        switch-to-application-1 = [ ];
+        switch-to-application-2 = [ ];
+        switch-to-application-3 = [ ];
+        switch-to-application-4 = [ ];
         toggle-application-view = [ "<Super>space" ];
-        toggle-message-tray = [];
-        toggle-overlay = [];
+        toggle-message-tray = [ ];
+        toggle-overlay = [ ];
       };
 
       "org/gnome/shell/extensions/bingwallpaper" = {
@@ -240,7 +238,14 @@ in
 
       "org/gnome/shell/extensions/paperwm" = {
         animation-time = 0.20000000000000004;
-        cycle-width-steps = [ 0.25 0.33 0.5 0.66 0.75 1.0 ];
+        cycle-width-steps = [
+          0.25
+          0.33
+          0.5
+          0.66
+          0.75
+          1.0
+        ];
         disable-topbar-styling = false;
         edge-preview-click-enable = false;
         edge-preview-scale = 0.0;
@@ -355,12 +360,22 @@ in
         switch-next = [ "<Super>l" ];
         switch-previous = [ "<Super>h" ];
         switch-up-workspace = [ "<Super>k" ];
-        toggle-scratch = [ "<Control><Super>Escape" "<Shift><Super>f" ];
+        toggle-scratch = [
+          "<Control><Super>Escape"
+          "<Shift><Super>f"
+        ];
       };
 
       "org/gnome/shell/extensions/vitals" = {
         hide-icons = false;
-        hot-sensors = [ "_memory_usage_" "_processor_usage_" "__temperature_avg__" "__network-rx_max__" "__network-tx_max__" "__fan_avg__" ];
+        hot-sensors = [
+          "_memory_usage_"
+          "_processor_usage_"
+          "__temperature_avg__"
+          "__network-rx_max__"
+          "__network-tx_max__"
+          "__fan_avg__"
+        ];
         icon-style = 0;
         include-static-info = true;
         show-battery = false;

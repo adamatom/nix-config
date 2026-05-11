@@ -1,18 +1,21 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # NixOS settings used for any host.
   # Enable the Flakes feature and the accompanying new nix command-line tool
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Install simpler programs/binaries
   environment.systemPackages = with pkgs; [
-      sysstat
-      lm_sensors
-      ethtool
-      pciutils
-      usbutils
-    ];
+    sysstat
+    lm_sensors
+    ethtool
+    pciutils
+    usbutils
+  ];
 
   hardware = {
     graphics.enable = true;
@@ -78,11 +81,11 @@
     # Enable CUPS to print documents.
     printing = {
       enable = true;
-      browsing = true;  # allow discovering network printers via DNS-SD
-      defaultShared = false;  # dont share this printer with others
-      drivers = [ 
+      browsing = true; # allow discovering network printers via DNS-SD
+      defaultShared = false; # dont share this printer with others
+      drivers = [
         # enable if IPP everywhere printing has issues:
-        # pkgs.cups-brother-hll2350dw 
+        # pkgs.cups-brother-hll2350dw
       ];
     };
 
@@ -107,7 +110,7 @@
       enable = true;
 
       # Load nvidia driver for Xorg and Wayland
-      videoDrivers = ["nvidia"];
+      videoDrivers = [ "nvidia" ];
 
       # Configure keymap in X11
       xkb = {
@@ -167,7 +170,7 @@
         "plugdev"
         "docker"
       ];
-      packages = with pkgs; [ ];
+      packages = [ ];
     };
   };
 

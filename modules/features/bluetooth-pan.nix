@@ -1,14 +1,23 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   inherit (lib) mkIf mkMerge;
-in {
+in
+{
   options.features.bluetoothPan.enable = lib.mkEnableOption "Bluetooth PAN (NAP) server";
 
   config = mkIf config.features.bluetoothPan.enable (mkMerge [
     {
       # Enable required packages and services
-      environment.systemPackages = with pkgs; [ bluez-tools bluez ];
+      environment.systemPackages = with pkgs; [
+        bluez-tools
+        bluez
+      ];
 
       services.dbus.enable = true;
       hardware.bluetooth.enable = true;
@@ -78,7 +87,7 @@ in {
 
       hardware.bluetooth.settings = {
         General = {
-          Enable = "Source,Sink,Media,Socket";  # Optional, but helps
+          Enable = "Source,Sink,Media,Socket"; # Optional, but helps
           Experimental = true;
           ControllerMode = "dual";
           Name = "hydra";
@@ -97,10 +106,9 @@ in {
       };
 
       systemd.services.bluetooth.serviceConfig.ExecStart = lib.mkForce [
-        ""  # reset existing ExecStart
+        "" # reset existing ExecStart
         "${pkgs.bluez}/libexec/bluetooth/bluetoothd --compat"
       ];
     }
   ]);
 }
-

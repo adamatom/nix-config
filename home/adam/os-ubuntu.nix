@@ -1,4 +1,9 @@
-{ config, lib, nixgl, ... }:
+{
+  config,
+  lib,
+  nixgl,
+  ...
+}:
 
 {
   # This is set by nixos, but not set on home-manager-only systems.
@@ -21,8 +26,8 @@
   # application via programs.<program>.enable that uses GTK.
   home.sessionVariables = {
     GDK_PIXBUF_MODULE_FILE = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache";
-    GDK_PIXBUF_MODULEDIR   = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
-    XCURSOR_THEME="Yaru";
+    GDK_PIXBUF_MODULEDIR = "/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders";
+    XCURSOR_THEME = "Yaru";
   };
 
   # On non-NixOS, we need to unset the following envvars that the nix dconf modules sets. Otherwise
@@ -55,7 +60,10 @@
       comment = "A terminal emulator";
       exec = "${config.programs.ghostty.package}/bin/ghostty --gtk-single-instance=true";
       icon = "com.mitchellh.ghostty";
-      categories = [ "System" "TerminalEmulator" ];
+      categories = [
+        "System"
+        "TerminalEmulator"
+      ];
       terminal = false;
       startupNotify = true;
       settings = {

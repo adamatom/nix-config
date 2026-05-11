@@ -9,7 +9,14 @@
     nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, home-manager, nixgl, ... }: 
+  outputs =
+    {
+      nixpkgs,
+      nixos-hardware,
+      home-manager,
+      nixgl,
+      ...
+    }:
     let
       system = "x86_64-linux";
 
@@ -22,7 +29,8 @@
         inherit system;
         config.allowUnfree = true;
       };
-    in {
+    in
+    {
       homeConfigurations.adam = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgsHM;
         modules = [
@@ -44,10 +52,13 @@
           # NixOS path: enable allowUnfree on the system pkgs.
           # Because we set home-manager.useGlobalPkgs = true below,
           # Home Manager will reuse this system pkgs set.
-          ({ lib, ... }: {
-            nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-            nixpkgs.config.allowUnfree = true; 
-          })
+          (
+            { lib, ... }:
+            {
+              nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+              nixpkgs.config.allowUnfree = true;
+            }
+          )
 
           nixos-hardware.nixosModules.lenovo-thinkpad-p53
           home-manager.nixosModules.home-manager

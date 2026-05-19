@@ -6,7 +6,7 @@
 }:
 
 let
-  wrapGL = pkg: config.lib.nixGL.wrap pkg;
+  wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
 in
 {
   home.packages = lib.mkAfter [

@@ -2,7 +2,7 @@
 
 let
   # helper fn to save typing.
-  wrapGL = pkg: config.lib.nixGL.wrap pkg;
+  wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
 in
 {
   home = {
@@ -53,10 +53,11 @@ in
 
     # GUI apps
     baobab
+    (wrapGL fractal)
     gitg
-    saleae-logic-2
-    slack
-    spotify
+    (wrapGL saleae-logic-2)
+    (wrapGL slack)
+    (wrapGL spotify)
 
     # Development tools
     clang-analyzer

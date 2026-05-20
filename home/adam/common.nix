@@ -55,6 +55,7 @@ in
     baobab
     (wrapGL fractal)
     gitg
+    litemdview
     (wrapGL saleae-logic-2)
     (wrapGL slack)
     (wrapGL spotify)

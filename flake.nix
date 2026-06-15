@@ -7,6 +7,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixgl.url = "github:nix-community/nixGL";
+    claude-code.url = "github:sadjow/claude-code-nix";
+    claude-code.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -15,6 +17,7 @@
       nixos-hardware,
       home-manager,
       nixgl,
+      claude-code,
       ...
     }:
     let
@@ -28,6 +31,9 @@
       pkgsHM = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        # Override claude-code with the upstream-tracking build from
+        # github:sadjow/claude-code-nix instead of the nixpkgs version.
+        overlays = [ claude-code.overlays.default ];
       };
     in
     {
@@ -57,6 +63,9 @@
             {
               nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
               nixpkgs.config.allowUnfree = true;
+              # Override claude-code with the upstream-tracking build from
+              # github:sadjow/claude-code-nix instead of the nixpkgs version.
+              nixpkgs.overlays = [ claude-code.overlays.default ];
             }
           )
 

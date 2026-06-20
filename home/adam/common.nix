@@ -3,6 +3,44 @@
 let
   # helper fn to save typing.
   wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
+
+  # Wrap a package so its main binary launches inside a transient systemd
+  # --user scope with cgroup-v2 memory limits, keeping the whole process tree
+  # (and any children, e.g. firefox content processes) under one cap.
+  #   high = MemoryHigh: soft limit. Kernel throttles + aggressively reclaims
+  #          the cgroup above this; it gets slow but is NOT killed.
+  #   max  = MemoryMax:  hard limit. Crossing it OOM-kills a process *inside
+  #          this cgroup only* (usually a tab), never the rest of the session.
+  # Apply outside wrapGL so the scope contains the nixGL -> firefox tree.
+  wrapMem =
+    args@{ high, max }:
+    pkg:
+    let
+      exe = pkg.meta.mainProgram;
+      wrapped = pkgs.symlinkJoin {
+        name = "${pkg.name}-memcap";
+        paths = [ pkg ];
+        postBuild = ''
+          rm -f "$out/bin/${exe}"
+          cat > "$out/bin/${exe}" <<EOF
+          #!${pkgs.runtimeShell}
+          exec ${pkgs.systemd}/bin/systemd-run --user --scope --quiet --collect \
+            -p MemoryHigh=${high} -p MemoryMax=${max} \
+            ${pkg}/bin/${exe} "\$@"
+          EOF
+          chmod +x "$out/bin/${exe}"
+        '';
+      };
+    in
+    # Forward override/overrideAttrs so consumers (e.g. the home-manager
+    # firefox module, which does package.override to inject policies) re-apply
+    # the memcap wrapper instead of unwrapping it.
+    wrapped
+    // {
+      inherit (pkg) meta;
+      override = f: wrapMem args (pkg.override f);
+      overrideAttrs = f: wrapMem args (pkg.overrideAttrs f);
+    };
 in
 {
   home = {
@@ -123,7 +161,7 @@ in
 
     firefox = {
       enable = true;
-      package = wrapGL pkgs.firefox;
+      package = wrapMem { high = "10G"; max = "14G"; } (wrapGL pkgs.firefox);
       configPath = ".mozilla/firefox";
     };
 

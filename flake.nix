@@ -9,6 +9,8 @@
     nixgl.url = "github:nix-community/nixGL";
     claude-code.url = "github:sadjow/claude-code-nix";
     claude-code.inputs.nixpkgs.follows = "nixpkgs";
+    system-manager.url = "github:numtide/system-manager";
+    system-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -18,6 +20,7 @@
       home-manager,
       nixgl,
       claude-code,
+      system-manager,
       ...
     }:
     let
@@ -28,12 +31,14 @@
       # can build unfree packages listed in home/adam/*.
       # On NixOS we do not use this: HM reuses the system pkgs (see useGlobalPkgs below),
       # so the NixOS path must enable allowUnfree at the system level instead.
+      nixpkgsConfig.allowUnfree = true;
+      nixpkgsOverlays = [ claude-code.overlays.default ];
       pkgsHM = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
+        config = nixpkgsConfig;
         # Override claude-code with the upstream-tracking build from
         # github:sadjow/claude-code-nix instead of the nixpkgs version.
-        overlays = [ claude-code.overlays.default ];
+        overlays = nixpkgsOverlays;
       };
     in
     {
@@ -43,10 +48,24 @@
           ./home/adam/common.nix
           ./home/adam/context-work.nix
           ./home/adam/os-ubuntu.nix
+          {
+            home.packages = [ system-manager.packages.${system}.default ];
+          }
         ];
         extraSpecialArgs = {
           inherit nixgl;
         };
+      };
+
+      systemConfigs.default = system-manager.lib.makeSystemConfig {
+        overlays = nixpkgsOverlays;
+        modules = [
+          {
+            nixpkgs.hostPlatform = system;
+            nixpkgs.config = nixpkgsConfig;
+          }
+          ./system/mullvad.nix
+        ];
       };
 
       nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {

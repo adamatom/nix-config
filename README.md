@@ -3,14 +3,17 @@
 ## Quickstart
 
 Updating everything, home-manager:
+
 ```
 nix flake update
 home-manager switch --flake "./#adam"
 ```
 
 ## NixOS
+
 When running from NixOS, the home-manager config is loaded automatically. To
 switch both NixOS and home-manager config, run:
+
 ```
 sudo nixos-rebuild switch --flake '.#hydra'
 ```
@@ -20,20 +23,23 @@ sudo nixos-rebuild switch --flake '.#hydra'
 When running this config on HomeManager inside of another Linux distribution,
 this command can be run initially to install home-manager and the apps defined
 in this flake:
+
 ```
 nix run "nixpkgs#home-manager" -- switch --flake "./nix-config#adam"
 ```
 
 Then after, update with:
+
 ```
 home-manager switch --flake ~/nix-config#adam
+system-manager switch --sudo --flake "~/nix-config#default"
 ```
 
 ## Gnome Settings
 
 Use dconf dump to know what to put into the `donf.settings`. For example,
-figuring out what to add when you want to configure PaperWM to treat
-`ulauncher` as a scratch layer:
+figuring out what to add when you want to configure PaperWM to treat `ulauncher`
+as a scratch layer:
 
 1. Modify the settings using the gui.
 2. Run `dconf dump` with as much of the dconf path as you know:

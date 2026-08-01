@@ -4,12 +4,8 @@
   # Make upstream package caches available while building this flake, including
   # the first switch before the persistent Nix settings below are activated.
   nixConfig = {
-    extra-substituters = [
-      "https://codex-cli.cachix.org"
-      "https://cache.numtide.com"
-    ];
+    extra-substituters = [ "https://cache.numtide.com" ];
     extra-trusted-public-keys = [
-      "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
   };
@@ -20,9 +16,6 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixgl.url = "github:nix-community/nixGL";
-    claude-code.url = "github:sadjow/claude-code-nix";
-    claude-code.inputs.nixpkgs.follows = "nixpkgs";
-    codex-cli.url = "github:sadjow/codex-cli-nix";
     llm-agents.url = "github:numtide/llm-agents.nix";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,8 +27,6 @@
       nixos-hardware,
       home-manager,
       nixgl,
-      claude-code,
-      codex-cli,
       llm-agents,
       system-manager,
       ...
@@ -49,12 +40,10 @@
       # On NixOS we do not use this: HM reuses the system pkgs (see useGlobalPkgs below),
       # so the NixOS path must enable allowUnfree at the system level instead.
       nixpkgsConfig.allowUnfree = true;
-      nixpkgsOverlays = [ claude-code.overlays.default ];
+      nixpkgsOverlays = [ ];
       pkgsHM = import nixpkgs {
         inherit system;
         config = nixpkgsConfig;
-        # Override claude-code with the upstream-tracking build from
-        # github:sadjow/claude-code-nix instead of the nixpkgs version.
         overlays = nixpkgsOverlays;
       };
     in
@@ -70,7 +59,7 @@
           }
         ];
         extraSpecialArgs = {
-          inherit nixgl codex-cli llm-agents;
+          inherit nixgl llm-agents;
         };
       };
 
@@ -99,9 +88,6 @@
             {
               nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
               nixpkgs.config.allowUnfree = true;
-              # Override claude-code with the upstream-tracking build from
-              # github:sadjow/claude-code-nix instead of the nixpkgs version.
-              nixpkgs.overlays = [ claude-code.overlays.default ];
             }
           )
 
@@ -119,7 +105,7 @@
               ];
             };
             home-manager.extraSpecialArgs = {
-              inherit nixgl codex-cli llm-agents;
+              inherit nixgl llm-agents;
             };
           }
         ];

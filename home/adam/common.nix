@@ -1,14 +1,16 @@
 {
   config,
   pkgs,
-  codex-cli,
   llm-agents,
   ...
 }:
 
 let
-  codexFromFlake = codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  herdrFromFlake = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
+  llmAgentPackages = llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  claudeCodeFromFlake = llmAgentPackages.claude-code;
+  codexFromFlake = llmAgentPackages.codex;
+  geminiCliFromFlake = llmAgentPackages.gemini-cli;
+  herdrFromFlake = llmAgentPackages.herdr;
 
   # helper fn to save typing.
   wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
@@ -64,7 +66,7 @@ in
 
     # CLI tools
     bat
-    claude-code
+    claudeCodeFromFlake
     codexFromFlake
     curlFull
     diff-so-fancy
@@ -72,7 +74,7 @@ in
     file
     fzf
     gawk
-    gemini-cli
+    geminiCliFromFlake
     gitFull
     git-lfs
     gnupg

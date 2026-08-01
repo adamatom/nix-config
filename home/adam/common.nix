@@ -2,11 +2,13 @@
   config,
   pkgs,
   codex-cli,
+  llm-agents,
   ...
 }:
 
 let
   codexFromFlake = codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  herdrFromFlake = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr;
 
   # helper fn to save typing.
   wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
@@ -76,6 +78,7 @@ in
     gnupg
     gnused
     gnutar
+    herdrFromFlake
     jq
     killall
     mcfly

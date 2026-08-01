@@ -1,6 +1,19 @@
 {
   description = "NixOS Flake-based + Home Manager configuration";
 
+  # Make upstream package caches available while building this flake, including
+  # the first switch before the persistent Nix settings below are activated.
+  nixConfig = {
+    extra-substituters = [
+      "https://codex-cli.cachix.org"
+      "https://cache.numtide.com"
+    ];
+    extra-trusted-public-keys = [
+      "codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -10,6 +23,7 @@
     claude-code.url = "github:sadjow/claude-code-nix";
     claude-code.inputs.nixpkgs.follows = "nixpkgs";
     codex-cli.url = "github:sadjow/codex-cli-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -22,6 +36,7 @@
       nixgl,
       claude-code,
       codex-cli,
+      llm-agents,
       system-manager,
       ...
     }:
@@ -55,7 +70,7 @@
           }
         ];
         extraSpecialArgs = {
-          inherit nixgl codex-cli;
+          inherit nixgl codex-cli llm-agents;
         };
       };
 
@@ -104,7 +119,7 @@
               ];
             };
             home-manager.extraSpecialArgs = {
-              inherit nixgl codex-cli;
+              inherit nixgl codex-cli llm-agents;
             };
           }
         ];

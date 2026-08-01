@@ -1,6 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  codex-cli,
+  ...
+}:
 
 let
+  codexFromFlake = codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
   # helper fn to save typing.
   wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
 
@@ -56,7 +63,7 @@ in
     # CLI tools
     bat
     claude-code
-    codex
+    codexFromFlake
     curlFull
     diff-so-fancy
     fd

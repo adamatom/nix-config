@@ -16,6 +16,8 @@
   xdg.mime.enable = true;
   xdg.configFile."nix/nix.conf".text = ''
     experimental-features = nix-command flakes
+    extra-substituters = https://codex-cli.cachix.org
+    extra-trusted-public-keys = codex-cli.cachix.org-1:1Br3H1hHoRYG22n//cGKJOk3cQXgYobUel6O8DgSing=
   '';
 
   # On non-NixOS (Ubuntu), point HM at nixGL’s package set.

@@ -9,6 +9,7 @@
     nixgl.url = "github:nix-community/nixGL";
     claude-code.url = "github:sadjow/claude-code-nix";
     claude-code.inputs.nixpkgs.follows = "nixpkgs";
+    codex-cli.url = "github:sadjow/codex-cli-nix";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -20,6 +21,7 @@
       home-manager,
       nixgl,
       claude-code,
+      codex-cli,
       system-manager,
       ...
     }:
@@ -53,7 +55,7 @@
           }
         ];
         extraSpecialArgs = {
-          inherit nixgl;
+          inherit nixgl codex-cli;
         };
       };
 
@@ -102,7 +104,7 @@
               ];
             };
             home-manager.extraSpecialArgs = {
-              inherit nixgl;
+              inherit nixgl codex-cli;
             };
           }
         ];

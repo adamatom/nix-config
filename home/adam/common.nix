@@ -174,7 +174,10 @@ in
 
     firefox = {
       enable = true;
-      package = wrapMem { high = "10G"; max = "14G"; } (wrapGL pkgs.firefox);
+      package = wrapMem {
+        high = "10G";
+        max = "14G";
+      } (wrapGL pkgs.firefox);
       configPath = ".mozilla/firefox";
     };
 

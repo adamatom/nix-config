@@ -77,6 +77,7 @@ in
     geminiCliFromFlake
     gitFull
     git-lfs
+    glab
     gnupg
     gnused
     gnutar

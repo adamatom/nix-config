@@ -107,7 +107,6 @@ in
     gitg
     litemdview
     (wrapGL saleae-logic-2)
-    (wrapGL slack)
     (wrapGL spotify)
 
     # Development tools

@@ -10,6 +10,6 @@ let
 in
 {
   home.packages = lib.mkAfter [
-    (wrapGL pkgs.teams-for-linux)
+    (wrapGL pkgs.slack)
   ];
 }

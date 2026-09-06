@@ -69,7 +69,6 @@ in
     claudeCodeFromFlake
     codexFromFlake
     curlFull
-    diff-so-fancy
     fd
     file
     fzf

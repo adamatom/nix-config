@@ -110,7 +110,8 @@ in
     (wrapGL spotify)
 
     # Development tools
-    clang-analyzer
+    # hiPrio: clang-tools now also ships scan-view; let clang-analyzer win the collision.
+    (lib.hiPrio clang-analyzer)
     clang-tools
     cmake
     dtc

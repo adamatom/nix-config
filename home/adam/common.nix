@@ -11,6 +11,7 @@ let
   codexFromFlake = llmAgentPackages.codex;
   geminiCliFromFlake = llmAgentPackages.gemini-cli;
   herdrFromFlake = llmAgentPackages.herdr;
+  tuicrFromFlake = llmAgentPackages.tuicr;
 
   # helper fn to save typing.
   wrapGL = pkg: if config.lib ? nixGL then config.lib.nixGL.wrap pkg else pkg;
@@ -81,6 +82,7 @@ in
     gnused
     gnutar
     herdrFromFlake
+    tuicrFromFlake
     jq
     killall
     mcfly

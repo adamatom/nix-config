@@ -91,6 +91,7 @@
             nixpkgs.config = nixpkgsConfig;
           }
           ./system/mullvad.nix
+          ./system/chromium-policies.nix
         ];
       };
 

@@ -1,0 +1,9 @@
+/* Tabs live in Sidebery, so hide the horizontal tab strip across the top. */
+#TabsToolbar {
+  visibility: collapse !important;
+}
+
+/* Hide the redundant sidebar title above Sidebery's own panel. */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
+  display: none !important;
+}

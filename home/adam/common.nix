@@ -53,6 +53,25 @@ let
       override = f: wrapMem args (pkg.override f);
       overrideAttrs = f: wrapMem args (pkg.overrideAttrs f);
     };
+
+  # Add-ons every Firefox install must have. Force-installed by enterprise
+  # policy from addons.mozilla.org, so they cannot be removed in the UI and
+  # keep auto-updating. Keyed by add-on ID, mapped to the AMO slug.
+  firefoxPolicies.ExtensionSettings =
+    builtins.mapAttrs
+      (_: slug: {
+        installation_mode = "force_installed";
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/${slug}/latest.xpi";
+      })
+      {
+        "{3c078156-979c-498b-8990-85f7987dd929}" = "sidebery";
+        "uBlock0@raymondhill.net" = "ublock-origin";
+        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = "bitwarden-password-manager";
+        "78272b6fa58f4a1abaac99321d503a20@proton.me" = "proton-pass";
+        "firefox-extension@deepl.com" = "deepl-translate";
+        "{9063c2e9-e07c-4c2c-9646-cfe7ca8d0498}" = "old-reddit-redirect";
+        "chrome-gnome-shell@gnome.org" = "gnome-shell-integration";
+      };
 in
 {
   home = {
@@ -175,11 +194,32 @@ in
 
     firefox = {
       enable = true;
+      # Policies are baked into the Firefox package itself, before the nixGL
+      # and memcap wrappers. Neither wrapper exposes the override signature
+      # home-manager needs, so its `policies` option would be dropped silently.
       package = wrapMem {
         high = "10G";
         max = "14G";
-      } (wrapGL pkgs.firefox);
+      } (wrapGL (pkgs.firefox.override { extraPolicies = firefoxPolicies; }));
       configPath = ".mozilla/firefox";
+
+      # Adopt the existing profile rather than creating a fresh one.
+      profiles.default = {
+        id = 0;
+        path = "q553gd94.default";
+        isDefault = true;
+        # Matches the "Profile Groups" database Firefox already created.
+        storeId = "26ba037c";
+
+        settings = {
+          # Required for userChrome.css to load.
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+          # Sidebery replaces Firefox's built-in vertical tabs.
+          "sidebar.verticalTabs" = false;
+        };
+
+        userChrome = builtins.readFile ./firefox/userChrome.css;
+      };
     };
 
     ghostty = {

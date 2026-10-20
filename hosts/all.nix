@@ -59,10 +59,6 @@
       openFirewall = true;
     };
 
-    # Enable the GNOME Desktop Environment.
-    desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-
     # Just ignore the lid
     logind.settings.Login.HandleLidSwitch = "ignore";
 
@@ -100,19 +96,8 @@
       '';
     };
 
-    # enable displa
-    xserver = {
-      enable = true;
-
-      # Load nvidia driver for Xorg and Wayland
-      videoDrivers = [ "nvidia" ];
-
-      # Configure keymap in X11
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-    };
+    # Load nvidia driver for Xorg and Wayland
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   security = {

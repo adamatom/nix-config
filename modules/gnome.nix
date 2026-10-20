@@ -1,5 +1,24 @@
-# GNOME: desktop settings, keybindings, shell extensions and PaperWM.
+# GNOME: the desktop itself on NixOS, plus desktop settings, keybindings,
+# shell extensions and PaperWM for home-manager.
 {
+  flake.modules.nixos.gnome = {
+    services = {
+      # Enable the GNOME Desktop Environment.
+      desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
+
+      xserver = {
+        enable = true;
+
+        # Configure keymap in X11
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+      };
+    };
+  };
+
   flake.modules.homeManager.gnome =
     { pkgs, ... }:
     {

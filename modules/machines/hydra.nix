@@ -7,6 +7,7 @@
       ../../hosts/all.nix
       config.flake.modules.nixos.nix-settings
       config.flake.modules.nixos.gnome
+      config.flake.modules.nixos.steam
       ../../hosts/hydra.nix
 
       # NixOS path: enable allowUnfree on the system pkgs.

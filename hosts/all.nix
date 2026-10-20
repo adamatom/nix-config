@@ -42,12 +42,6 @@
     # /lib/ld-linux-x86-64.so.2 interpreter that unpatched binaries expect. If we were running
     # home-manager on Ubuntu, then I think the unpatched binaries would just run
     nix-ld.enable = true;
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-      localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-    };
     zsh.enable = true;
   };
 

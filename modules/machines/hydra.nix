@@ -40,9 +40,6 @@
             config.flake.modules.homeManager.minecraft
           ];
         };
-        home-manager.extraSpecialArgs = {
-          inherit (inputs) nixgl;
-        };
       }
     ];
   };

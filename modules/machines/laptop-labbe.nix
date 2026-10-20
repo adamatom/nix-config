@@ -23,16 +23,13 @@ in
       config.flake.modules.homeManager.gnome
       config.flake.modules.homeManager.nixgl
       config.flake.modules.homeManager.slack
-      ../../home/adam/os-ubuntu.nix
+      config.flake.modules.homeManager.ubuntu
       config.flake.modules.homeManager.mullvad
       config.flake.modules.homeManager.outlook-pwa
       {
         home.packages = [ inputs.system-manager.packages.${system}.default ];
       }
     ];
-    extraSpecialArgs = {
-      inherit (inputs) nixgl;
-    };
   };
 
   flake.systemConfigs.default = inputs.system-manager.lib.makeSystemConfig {

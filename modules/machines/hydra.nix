@@ -36,7 +36,7 @@
             config.flake.modules.homeManager.gnome
             config.flake.modules.homeManager.nixgl
             ../../home/adam/context-home.nix
-            ../../home/adam/os-nixos.nix
+            config.flake.modules.homeManager.minecraft
           ];
         };
         home-manager.extraSpecialArgs = {

@@ -24,6 +24,7 @@ in
       config.flake.modules.homeManager.nixgl
       ../../home/adam/context-work.nix
       ../../home/adam/os-ubuntu.nix
+      config.flake.modules.homeManager.mullvad
       config.flake.modules.homeManager.outlook-pwa
       {
         home.packages = [ inputs.system-manager.packages.${system}.default ];
@@ -41,7 +42,7 @@ in
         nixpkgs.hostPlatform = system;
         nixpkgs.config = nixpkgsSettings.config;
       }
-      ../../system/mullvad.nix
+      config.flake.modules.systemManager.mullvad
       config.flake.modules.systemManager.outlook-pwa
     ];
   };

@@ -55,9 +55,6 @@
     '';
   };
 
-  # Install mullvad, make it available.
-  programs.mullvad-vpn.enable = true;
-
   # Override the default ghostty desktop entry, which sidesteps the wrapgl wrapping.
   xdg.desktopEntries = {
     "com.mitchellh.ghostty" = {

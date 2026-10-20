@@ -56,13 +56,6 @@
     # Just ignore the lid
     logind.settings.Login.HandleLidSwitch = "ignore";
 
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-
     # Enable CUPS to print documents.
     printing = {
       enable = true;
@@ -73,9 +66,6 @@
         # pkgs.cups-brother-hll2350dw
       ];
     };
-
-    # Enable sound with pipewire.
-    pulseaudio.enable = false;
 
     # Enable tailscale
     tailscale = {
@@ -124,7 +114,6 @@
       }
     ];
 
-    rtkit.enable = true;
   };
 
   # Set your time zone.

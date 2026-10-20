@@ -10,6 +10,7 @@
       config.flake.modules.nixos.steam
       config.flake.modules.nixos.pipewire
       config.flake.modules.nixos.printing
+      config.flake.modules.nixos.tailscale
       ../../hosts/hydra.nix
 
       # NixOS path: enable allowUnfree on the system pkgs.

@@ -49,12 +49,6 @@
     # Just ignore the lid
     logind.settings.Login.HandleLidSwitch = "ignore";
 
-    # Enable tailscale
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "client";
-    };
-
     udev = {
       extraRules = ''
         # FTDI FT2232H Dual RS232-HS: Vendor 0403, Product 6010, commonly used for openocd jtagging

@@ -22,7 +22,7 @@ in
       config.flake.modules.homeManager.ghostty
       config.flake.modules.homeManager.gnome
       config.flake.modules.homeManager.nixgl
-      ../../home/adam/context-work.nix
+      config.flake.modules.homeManager.slack
       ../../home/adam/os-ubuntu.nix
       config.flake.modules.homeManager.mullvad
       config.flake.modules.homeManager.outlook-pwa

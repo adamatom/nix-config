@@ -35,7 +35,8 @@
             config.flake.modules.homeManager.ghostty
             config.flake.modules.homeManager.gnome
             config.flake.modules.homeManager.nixgl
-            ../../home/adam/context-home.nix
+            config.flake.modules.homeManager.discord
+            config.flake.modules.homeManager.kicad
             config.flake.modules.homeManager.minecraft
           ];
         };

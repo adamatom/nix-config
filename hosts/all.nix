@@ -2,17 +2,6 @@
 
 {
   # NixOS settings used for any host.
-  # Enable the Flakes feature and the accompanying new nix command-line tool
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    extra-substituters = [ "https://cache.numtide.com" ];
-    extra-trusted-public-keys = [
-      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-    ];
-  };
 
   # Install simpler programs/binaries
   environment.systemPackages = with pkgs; [

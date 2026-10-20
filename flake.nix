@@ -19,117 +19,24 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     system-manager.url = "github:numtide/system-manager";
     system-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+    import-tree.url = "github:vic/import-tree";
   };
 
+  # Everything lives in ./modules: features under modules/, machines under
+  # modules/machines/. Each file is a flake-parts module.
   outputs =
-    {
-      nixpkgs,
-      nixos-hardware,
-      home-manager,
-      nixgl,
-      llm-agents,
-      system-manager,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-
-      # pkgsHM is only for Home-Manager-only/non-NixOS installs.
-      # We import nixpkgs here with allowUnfree enabled so that HM on Ubuntu, etc.
-      # can build unfree packages listed in home/adam/*.
-      # On NixOS we do not use this: HM reuses the system pkgs (see useGlobalPkgs below),
-      # so the NixOS path must enable allowUnfree at the system level instead.
-      nixpkgsConfig.allowUnfree = true;
-      nixpkgsOverlays = [
-        # nix-direnv 3.2.0 reloads the environment at every prompt when more
-        # than one direnv instance uses the same .envrc
-        # (https://github.com/nix-community/nix-direnv/issues/786). Pin the
-        # source to the merge of the fix until upstream cuts a release.
-        # The package is a two-stage resholve build, so the source is swapped at
-        # the fetcher rather than with overrideAttrs.
-        (final: prev: {
-          nix-direnv = prev.nix-direnv.override {
-            fetchFromGitHub =
-              args:
-              prev.fetchFromGitHub (
-                builtins.removeAttrs args [ "tag" ]
-                // {
-                  rev = "8c7ebb294d997bc1720ddf3f7ee9ed27c290a0e6";
-                  hash = "sha256-nizx6hDPX8P9/M7GWLunnnQpyPJed1ZzKuNDnU+R4Oc=";
-                }
-              );
-          };
-        })
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        # Provides flake.modules.<class>.<name>.
+        flake-parts.flakeModules.modules
+        # Every .nix file under ./modules is a flake-parts module, except
+        # paths containing "/_".
+        (inputs.import-tree ./modules)
       ];
-      pkgsHM = import nixpkgs {
-        inherit system;
-        config = nixpkgsConfig;
-        overlays = nixpkgsOverlays;
-      };
-    in
-    {
-      homeConfigurations.adam = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsHM;
-        modules = [
-          ./home/adam/common.nix
-          ./home/adam/context-work.nix
-          ./home/adam/os-ubuntu.nix
-          {
-            home.packages = [ system-manager.packages.${system}.default ];
-          }
-        ];
-        extraSpecialArgs = {
-          inherit nixgl llm-agents;
-        };
-      };
 
-      systemConfigs.default = system-manager.lib.makeSystemConfig {
-        overlays = nixpkgsOverlays;
-        modules = [
-          {
-            nixpkgs.hostPlatform = system;
-            nixpkgs.config = nixpkgsConfig;
-          }
-          ./system/mullvad.nix
-          ./system/chromium-policies.nix
-        ];
-      };
-
-      nixosConfigurations.hydra = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./hosts/all.nix
-          ./hosts/hydra.nix
-
-          # NixOS path: enable allowUnfree on the system pkgs.
-          # Because we set home-manager.useGlobalPkgs = true below,
-          # Home Manager will reuse this system pkgs set.
-          (
-            { lib, ... }:
-            {
-              nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-              nixpkgs.config.allowUnfree = true;
-            }
-          )
-
-          nixos-hardware.nixosModules.lenovo-thinkpad-p53
-          home-manager.nixosModules.home-manager
-          {
-            # Reuse the system pkgs in HM on NixOS (so no separate HM pkgs import).
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.adam = {
-              imports = [
-                ./home/adam/common.nix
-                ./home/adam/context-home.nix
-                ./home/adam/os-nixos.nix
-              ];
-            };
-            home-manager.extraSpecialArgs = {
-              inherit nixgl llm-agents;
-            };
-          }
-        ];
-      };
+      systems = [ "x86_64-linux" ];
     };
 }

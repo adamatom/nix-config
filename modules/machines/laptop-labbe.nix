@@ -1,0 +1,48 @@
+# Work laptop: Ubuntu with standalone home-manager and system-manager.
+#
+# Note: `config` here is the flake-parts config (shared settings, feature
+# modules), not the home-manager or system-manager config.
+{ config, inputs, ... }:
+let
+  system = "x86_64-linux";
+  nixpkgsSettings = config.shared.nixpkgs;
+in
+{
+  flake.homeConfigurations.adam = inputs.home-manager.lib.homeManagerConfiguration {
+    pkgs = import inputs.nixpkgs {
+      inherit system;
+      inherit (nixpkgsSettings) config overlays;
+    };
+    modules = [
+      config.flake.modules.homeManager.base
+      config.flake.modules.homeManager.ai-tools
+      config.flake.modules.homeManager.dev
+      config.flake.modules.homeManager.desktop-apps
+      config.flake.modules.homeManager.firefox
+      config.flake.modules.homeManager.ghostty
+      config.flake.modules.homeManager.gnome
+      config.flake.modules.homeManager.nixgl
+      ../../home/adam/context-work.nix
+      ../../home/adam/os-ubuntu.nix
+      config.flake.modules.homeManager.outlook-pwa
+      {
+        home.packages = [ inputs.system-manager.packages.${system}.default ];
+      }
+    ];
+    extraSpecialArgs = {
+      inherit (inputs) nixgl;
+    };
+  };
+
+  flake.systemConfigs.default = inputs.system-manager.lib.makeSystemConfig {
+    inherit (nixpkgsSettings) overlays;
+    modules = [
+      {
+        nixpkgs.hostPlatform = system;
+        nixpkgs.config = nixpkgsSettings.config;
+      }
+      ../../system/mullvad.nix
+      config.flake.modules.systemManager.outlook-pwa
+    ];
+  };
+}

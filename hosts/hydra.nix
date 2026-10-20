@@ -12,7 +12,7 @@ in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ../modules/features/remap-capslock.nix
+    ../modules/_legacy/remap-capslock.nix
   ];
 
   features.remapCaps.enable = true;

@@ -14,6 +14,13 @@
       xdg.enable = true;
       xdg.mime.enable = true;
 
+      # Flakes and the numtide cache; NixOS sets these system-wide instead.
+      xdg.configFile."nix/nix.conf".text = ''
+        experimental-features = nix-command flakes
+        extra-substituters = https://cache.numtide.com
+        extra-trusted-public-keys = niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=
+      '';
+
       # On non-NixOS (Ubuntu), point HM at nixGL’s package set.
       # On NixOS, leave it unset — wrappers become no-ops.
       targets.genericLinux.nixGL.packages = inputs.nixgl.packages;

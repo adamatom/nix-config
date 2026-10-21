@@ -26,7 +26,6 @@ in
       config.flake.modules.homeManager.nixgl
       config.flake.modules.homeManager.slack
       config.flake.modules.homeManager.ubuntu
-      config.flake.modules.homeManager.nix-settings
       config.flake.modules.homeManager.mullvad
       config.flake.modules.homeManager.outlook-pwa
       {

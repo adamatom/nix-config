@@ -12,10 +12,6 @@
     usbutils
   ];
 
-  hardware = {
-    graphics.enable = true;
-  };
-
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -44,13 +40,7 @@
     zsh.enable = true;
   };
 
-  services = {
-    # Just ignore the lid
-    logind.settings.Login.HandleLidSwitch = "ignore";
-
-    # Load nvidia driver for Xorg and Wayland
-    xserver.videoDrivers = [ "nvidia" ];
-  };
+  services = { };
 
   security = {
     # pam.enableLimits = true;

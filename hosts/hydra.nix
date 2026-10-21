@@ -62,7 +62,15 @@ in
     };
   };
 
+  # Just ignore the lid
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware = {
+    graphics.enable = true;
+
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
     nvidia = {

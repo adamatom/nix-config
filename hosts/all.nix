@@ -107,11 +107,8 @@
         "wheel"
         "dialout"
         "plugdev"
-        "docker"
       ];
       packages = [ ];
     };
   };
-
-  virtualisation.docker.enable = true;
 }

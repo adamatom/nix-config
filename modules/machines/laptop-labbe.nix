@@ -16,6 +16,7 @@ in
     modules = [
       config.flake.modules.homeManager.base
       config.flake.modules.homeManager.ai-tools
+      config.flake.modules.homeManager.herdr
       config.flake.modules.homeManager.dev
       config.flake.modules.homeManager.desktop-apps
       config.flake.modules.homeManager.fonts

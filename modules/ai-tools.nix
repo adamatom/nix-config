@@ -14,7 +14,6 @@
         claude-code
         codex
         gemini-cli
-        herdr
         tuicr
       ];
     };

@@ -145,7 +145,6 @@
         neovim
         nmap
         ripgrep
-        tmux
         tree
         wget
         which

@@ -170,6 +170,7 @@
           imports = [
             config.flake.modules.homeManager.ai-tools
             config.flake.modules.homeManager.herdr
+            config.flake.modules.homeManager.tmux
             config.flake.modules.homeManager.fonts
             config.flake.modules.homeManager.spellchecking
             config.flake.modules.homeManager.firefox

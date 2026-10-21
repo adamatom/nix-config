@@ -3,7 +3,7 @@
 # Machines live in separate files, so they can't share a `let` block. Instead
 # this file declares an option and sets it; machine files read it back from
 # `config.shared.nixpkgs`.
-{ lib, ... }:
+{ config, lib, ... }:
 {
   options.shared.nixpkgs = {
     config = lib.mkOption {
@@ -40,5 +40,13 @@
         };
       })
     ];
+  };
+
+  # NixOS applies the shared settings to the system pkgs, which home-manager
+  # also uses there (home-manager.useGlobalPkgs).
+  config.flake.modules.nixos.nixpkgs = {
+    nixpkgs = {
+      inherit (config.shared.nixpkgs) config overlays;
+    };
   };
 }

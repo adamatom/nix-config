@@ -157,15 +157,11 @@
       config.flake.modules.nixos.remap-capslock
       config.flake.modules.nixos.hydra
 
-      # NixOS path: enable allowUnfree on the system pkgs.
-      # Because we set home-manager.useGlobalPkgs = true below,
-      # Home Manager will reuse this system pkgs set.
-      # TODO: this machine does not get config.shared.nixpkgs.overlays yet.
+      config.flake.modules.nixos.nixpkgs
       (
         { lib, ... }:
         {
           nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-          nixpkgs.config.allowUnfree = true;
         }
       )
 

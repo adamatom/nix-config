@@ -17,10 +17,7 @@
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
-        ../_legacy/remap-capslock.nix
       ];
-
-      features.remapCaps.enable = true;
 
       boot = {
         initrd.availableKernelModules = [
@@ -157,6 +154,7 @@
       config.flake.modules.nixos.docker
       config.flake.modules.nixos.dev
       config.flake.modules.nixos.desktop-apps
+      config.flake.modules.nixos.remap-capslock
       config.flake.modules.nixos.hydra
 
       # NixOS path: enable allowUnfree on the system pkgs.

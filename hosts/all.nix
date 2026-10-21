@@ -49,13 +49,6 @@
     # Just ignore the lid
     logind.settings.Login.HandleLidSwitch = "ignore";
 
-    udev = {
-      extraRules = ''
-        # FTDI FT2232H Dual RS232-HS: Vendor 0403, Product 6010, commonly used for openocd jtagging
-        SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="0666", GROUP="dialout"
-      '';
-    };
-
     # Load nvidia driver for Xorg and Wayland
     xserver.videoDrivers = [ "nvidia" ];
   };
@@ -105,7 +98,6 @@
       extraGroups = [
         "networkmanager"
         "wheel"
-        "dialout"
         "plugdev"
       ];
       packages = [ ];

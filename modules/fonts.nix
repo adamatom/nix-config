@@ -5,6 +5,7 @@
     {
       home.packages = with pkgs.nerd-fonts; [
         pkgs.nerd-fonts."m+"
+        caskaydia-cove # Ghostty
         envy-code-r
         fira-mono
         jetbrains-mono

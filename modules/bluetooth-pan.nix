@@ -1,6 +1,4 @@
-# Bluetooth PAN (NAP) server: hydra shares its internet connection over
-# Bluetooth, bridging clients onto pan0 with DHCP from dnsmasq and NAT out of
-# the Wi-Fi interface. No machine orders this today.
+# Bluetooth PAN (NAP) server: share this machine's internet connection over Bluetooth.
 {
   flake.modules.nixos.bluetooth-pan =
     { lib, pkgs, ... }:

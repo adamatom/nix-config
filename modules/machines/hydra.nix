@@ -175,7 +175,6 @@
             config.flake.modules.homeManager.spellchecking
             config.flake.modules.homeManager.firefox
             config.flake.modules.homeManager.ghostty
-            config.flake.modules.homeManager.gnome
             config.flake.modules.homeManager.nixgl
             config.flake.modules.homeManager.discord
             config.flake.modules.homeManager.kicad

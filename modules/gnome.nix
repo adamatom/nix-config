@@ -1,7 +1,11 @@
 # GNOME: the desktop itself on NixOS, plus desktop settings, keybindings,
 # shell extensions and PaperWM for home-manager.
+{ config, ... }:
 {
   flake.modules.nixos.gnome = {
+    # Bring the home-manager half along on NixOS.
+    home-manager.sharedModules = [ config.flake.modules.homeManager.gnome ];
+
     services = {
       # Enable the GNOME Desktop Environment.
       desktopManager.gnome.enable = true;

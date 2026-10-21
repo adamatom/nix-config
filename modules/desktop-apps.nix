@@ -1,4 +1,4 @@
-# Graphical apps and spellchecking.
+# Graphical apps.
 {
   # udev rules so the Saleae Logic app can reach the analyzer over USB.
   flake.modules.nixos.desktop-apps = {
@@ -16,11 +16,6 @@
         litemdview
         (wrapGL saleae-logic-2)
         (wrapGL spotify)
-
-        # Spellchecking
-        hunspell
-        hunspellDicts.en_US
-        hunspellDicts.de_DE
       ];
     };
 }

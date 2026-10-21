@@ -19,6 +19,7 @@ in
       config.flake.modules.homeManager.dev
       config.flake.modules.homeManager.desktop-apps
       config.flake.modules.homeManager.fonts
+      config.flake.modules.homeManager.spellchecking
       config.flake.modules.homeManager.firefox
       config.flake.modules.homeManager.ghostty
       config.flake.modules.homeManager.gnome

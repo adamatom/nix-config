@@ -18,6 +18,7 @@ in
       config.flake.modules.homeManager.ai-tools
       config.flake.modules.homeManager.herdr
       config.flake.modules.homeManager.tmux
+      config.flake.modules.homeManager.git
       config.flake.modules.homeManager.dev
       config.flake.modules.homeManager.desktop-apps
       config.flake.modules.homeManager.fonts

@@ -133,8 +133,6 @@
         file
         fzf
         gawk
-        gitFull
-        git-lfs
         glab
         gnupg
         gnused

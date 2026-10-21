@@ -1,4 +1,4 @@
-# Graphical apps, fonts and spellchecking.
+# Graphical apps and spellchecking.
 {
   # udev rules so the Saleae Logic app can reach the analyzer over USB.
   flake.modules.nixos.desktop-apps = {
@@ -16,15 +16,6 @@
         litemdview
         (wrapGL saleae-logic-2)
         (wrapGL spotify)
-
-        # Fonts
-        nerd-fonts."m+"
-        nerd-fonts.envy-code-r
-        nerd-fonts.fira-mono
-        nerd-fonts.jetbrains-mono
-        nerd-fonts.meslo-lg
-        nerd-fonts.monaspace
-        nerd-fonts.zed-mono
 
         # Spellchecking
         hunspell

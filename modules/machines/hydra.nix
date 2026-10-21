@@ -168,7 +168,6 @@
       {
         home-manager.users.adam = {
           imports = [
-            config.flake.modules.homeManager.base
             config.flake.modules.homeManager.ai-tools
             config.flake.modules.homeManager.dev
             config.flake.modules.homeManager.desktop-apps

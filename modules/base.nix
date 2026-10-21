@@ -1,11 +1,14 @@
 # What every machine gets: identity, shell, everyday CLI tools. On NixOS also
 # the user account, locale, networking and basic system tools, with
 # home-manager built into the system.
-{ inputs, ... }:
+{ config, inputs, ... }:
 {
   flake.modules.nixos.base =
     { pkgs, ... }:
     {
+      # Bring the home-manager half along on NixOS.
+      home-manager.sharedModules = [ config.flake.modules.homeManager.base ];
+
       # Every NixOS machine runs home-manager as part of the system build,
       # reusing the system pkgs instead of importing nixpkgs again.
       imports = [ inputs.home-manager.nixosModules.home-manager ];

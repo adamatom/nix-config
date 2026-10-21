@@ -1,7 +1,11 @@
 # Compilers, language servers and embedded tooling.
+{ config, ... }:
 {
   # Hardware access for embedded work: JTAG adapters and serial ports.
   flake.modules.nixos.dev = {
+    # Bring the home-manager half along on NixOS.
+    home-manager.sharedModules = [ config.flake.modules.homeManager.dev ];
+
     services.udev.extraRules = ''
       # FTDI FT2232H Dual RS232-HS: Vendor 0403, Product 6010, commonly used for openocd jtagging
       SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="0666", GROUP="dialout"

@@ -128,7 +128,6 @@
         zsh
 
         # CLI tools
-        bat
         curlFull
         fd
         file
@@ -169,6 +168,13 @@
         };
 
         htop.enable = true;
+
+        bat = {
+          enable = true;
+          # Leave a little room on the right, so long lines don't touch the
+          # terminal edge.
+          config.terminal-width = "-4";
+        };
 
         # Let home Manager install and manage itself.
         home-manager.enable = true;

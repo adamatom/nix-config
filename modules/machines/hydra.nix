@@ -13,6 +13,7 @@
       config.flake.modules.nixos.tailscale
       config.flake.modules.nixos.docker
       config.flake.modules.nixos.dev
+      config.flake.modules.nixos.desktop-apps
       ../../hosts/hydra.nix
 
       # NixOS path: enable allowUnfree on the system pkgs.

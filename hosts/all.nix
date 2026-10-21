@@ -14,7 +14,6 @@
 
   hardware = {
     graphics.enable = true;
-    saleae-logic.enable = true;
   };
 
   # Select internationalisation properties.

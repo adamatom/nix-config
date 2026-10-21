@@ -1,5 +1,10 @@
 # Graphical apps, fonts and spellchecking.
 {
+  # udev rules so the Saleae Logic app can reach the analyzer over USB.
+  flake.modules.nixos.desktop-apps = {
+    hardware.saleae-logic.enable = true;
+  };
+
   flake.modules.homeManager.desktop-apps =
     { pkgs, wrapGL, ... }:
     {

@@ -169,7 +169,6 @@
         home-manager.users.adam = {
           imports = [
             config.flake.modules.homeManager.ai-tools
-            config.flake.modules.homeManager.desktop-apps
             config.flake.modules.homeManager.fonts
             config.flake.modules.homeManager.spellchecking
             config.flake.modules.homeManager.firefox

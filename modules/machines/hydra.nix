@@ -165,11 +165,7 @@
       )
 
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p53
-      inputs.home-manager.nixosModules.home-manager
       {
-        # Reuse the system pkgs in HM on NixOS (so no separate HM pkgs import).
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
         home-manager.users.adam = {
           imports = [
             config.flake.modules.homeManager.base

@@ -4,7 +4,7 @@
   flake.nixosConfigurations.hydra = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = [
-      ../../hosts/all.nix
+      config.flake.modules.nixos.base
       config.flake.modules.nixos.nix-settings
       config.flake.modules.nixos.gnome
       config.flake.modules.nixos.steam

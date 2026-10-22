@@ -15,6 +15,7 @@ in
     };
     modules = [
       config.flake.modules.homeManager.base
+      config.flake.modules.homeManager.zsh
       config.flake.modules.homeManager.ai-tools
       config.flake.modules.homeManager.herdr
       config.flake.modules.homeManager.tmux

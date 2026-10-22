@@ -124,9 +124,6 @@
       };
 
       home.packages = with pkgs; [
-        # I dont want to give up my .zshrc yet, so I cant use programs.zsh.enable.
-        zsh
-
         # CLI tools
         curlFull
         fd

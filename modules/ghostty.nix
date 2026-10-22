@@ -7,8 +7,8 @@
         enable = true;
         package = wrapGL pkgs.ghostty;
         settings = {
-          # zsh isn't managed by home-manager (I keep my own .zshrc), so start
-          # it as a login shell explicitly.
+          # programs.zsh isn't enabled (see zsh.nix), so start zsh as a login
+          # shell explicitly.
           command = "${pkgs.zsh}/bin/zsh --login --interactive";
           font-family = "AdamataMonoLiga Nerd Font Mono";
           font-family-bold = "AdamataMonoLiga Nerd Font Mono";

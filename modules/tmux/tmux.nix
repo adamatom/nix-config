@@ -3,7 +3,11 @@
   flake.modules.homeManager.tmux =
     { pkgs, ... }:
     {
-      home.packages = [ pkgs.tmux ];
+      home.packages = [
+        pkgs.tmux
+        # Copy-mode clipboard helper used by tmux.conf.
+        (pkgs.writeScriptBin "which_clip.sh" (builtins.readFile ./which_clip.sh))
+      ];
       home.file.".tmux.conf".source = ./tmux.conf;
     };
 }

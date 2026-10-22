@@ -29,7 +29,7 @@
       home.packages = with pkgs.nerd-fonts; [
         adamata
         pkgs.nerd-fonts."m+"
-        caskaydia-cove # Ghostty
+        caskaydia-cove
         envy-code-r
         fira-mono
         jetbrains-mono

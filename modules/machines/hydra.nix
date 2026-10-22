@@ -173,6 +173,7 @@
             config.flake.modules.homeManager.tmux
             config.flake.modules.homeManager.git
             config.flake.modules.homeManager.gdb
+            config.flake.modules.homeManager.neovim
             config.flake.modules.homeManager.fonts
             config.flake.modules.homeManager.spellchecking
             config.flake.modules.homeManager.firefox

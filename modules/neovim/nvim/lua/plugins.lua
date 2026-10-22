@@ -1,0 +1,142 @@
+-- [[ Install `lazy.nvim` plugin manager ]]
+--    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  if vim.v.shell_error ~= 0 then
+    error('Error cloning lazy.nvim:\n' .. out)
+  end
+end
+
+---@type vim.Option
+local rtp = vim.opt.rtp
+rtp:prepend(lazypath)
+
+-- [[ Configure and install plugins ]]
+--
+--  To check the current status of your plugins, run
+--    :Lazy
+--
+--  To update plugins you can run
+--    :Lazy update
+--
+require('lazy').setup({
+  --- Colorschemes
+  require 'plugins.colorschemes.onedarkhc',
+  require 'plugins.colorschemes.catppuccin',
+  require 'plugins.colorschemes.nightfox',
+  require 'plugins.colorschemes.github-nvim-theme',
+  require 'plugins.colorschemes.colorscheme-arctic',
+  require 'plugins.colorschemes.colorscheme-cyberdream',
+  require 'plugins.colorschemes.colorscheme-doomone',
+  require 'plugins.colorschemes.colorscheme-zenbones',
+  require 'plugins.colorschemes.vim-seti',
+
+  -- Show hex color codes as the color
+  {'norcalli/nvim-colorizer.lua', config = function() require'colorizer'.setup() end},
+
+  -- I use nvim as my 'git commit' editor, show the diff when editing a git commit
+  'rhysd/committia.vim',
+
+  -- Add Linux commands like :Move, :Rename, :Remove, and fix the vim buffers and state
+  'tpope/vim-eunuch',
+
+  -- allow things like 'griw' to replace the inner word with the " register in normal mode
+  'vim-scripts/ReplaceWithRegister',
+
+  -- display marks
+  --
+  {"chentoast/marks.nvim", event = "VeryLazy", opts = {}, },
+
+  -- reload files that are edited outside of nvim
+  'djoshea/vim-autoread',
+
+  -- Project wide search and replace
+  'MagicDuck/grug-far.nvim',
+
+  -- Completion engine
+  require 'plugins.blink-cmp',
+
+  -- File explorer
+  require 'plugins.oil',
+  { "malewicz1337/oil-git.nvim", dependencies = { "stevearc/oil.nvim" } },
+
+  -- Git integration, mostly for GitBlame
+  require 'plugins.fugitive',
+
+  -- Show git gutter signs
+  require 'plugins.gitsigns',
+
+  -- Guess indentations
+  require 'plugins.guess-indent',
+
+  -- Provide an undo window to visualize the vim undo tree
+  require 'plugins.gundo',
+
+  -- Generate tags file automatically
+  -- require 'plugins.gutentags',
+
+  -- Jump to characters
+  require 'plugins.pounce',
+
+  -- Show indentation level indicators
+  require 'plugins.indent_line',
+
+  -- Lint source code files
+  -- require 'plugins.lint',
+
+  -- Pull in sane defaults for LSP servers
+  require 'plugins.lspconfig',
+
+  -- Fancy status line
+  require 'plugins.lualine',
+
+  -- Changes vi UI elements, such as the command input and notifications
+  require 'plugins.noice',
+
+  -- Snacks for dashboard
+  require 'plugins.snacks',
+
+  -- Fuzzy find files (and other things like symbols from lsp)
+  require 'plugins.telescope',
+
+  -- Language aware syntax highlighting
+  require 'plugins.treesitter',
+
+  -- Show keybinds while we learn them
+  require 'plugins.which-key',
+
+  -- Formating, only markdown for now
+  require 'plugins.conform',
+
+  -- Follow Markdown links
+  { 'jghauser/follow-md-links.nvim' },
+
+  -- Allow for switching between which compile_commands.json
+  require 'plugins.clangd_db_picker',
+
+}, {
+  -- The config dir is a read-only home-manager link, so keep the lockfile in data.
+  lockfile = vim.fn.stdpath 'data' .. '/lazy-lock.json',
+  ui = {
+    icons = vim.g.have_nerd_font and {} or {
+      cmd = '⌘',
+      config = '🛠',
+      event = '📅',
+      ft = '📂',
+      init = '⚙',
+      keys = '🗝',
+      plugin = '🔌',
+      runtime = '💻',
+      require = '🌙',
+      source = '📄',
+      start = '🚀',
+      task = '📌',
+      lazy = '💤 ',
+    },
+  },
+})
+
+vim.opt.background = 'dark'
+vim.cmd.colorscheme('doom-one')

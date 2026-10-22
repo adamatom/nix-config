@@ -140,7 +140,6 @@
         jq
         killall
         mcfly
-        neovim
         nmap
         ripgrep
         tree

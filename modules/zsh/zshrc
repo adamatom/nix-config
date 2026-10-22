@@ -299,14 +299,6 @@ gitk() { command gitk "$@" &! }
 
 launch() { "$@" 2>/dev/null & disown }
 
-config() {
-    if [[ $@ =~ "^clean" ]]; then
-        echo "LOLLLLLLL, you almost blew up your home directory"
-    else
-        git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
-    fi
-}
-
 zshrecompile() {
     autoload -U zrecompile
     rm -f ~/.zsh/*.zwc
@@ -457,9 +449,6 @@ _invoke_complete() {
 
 # Hook it up for both "invoke" and "inv"
 compdef _invoke_complete invoke inv
-
-# Reuse git completion for the bare-repo dotfiles wrapper.
-compdef _git config=git
 
 # -------------------------------------------------------------------------------------------------
 # Disable Ctrl-s/Ctrl-q, which freezes and unfreezes the terminal.

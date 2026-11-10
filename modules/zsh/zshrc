@@ -271,6 +271,7 @@ alias backupb2="rclone sync /home/adam b2:Pascal-Backup --transfers 32 --filter-
 alias pip="pip3"
 alias vc="nvim ~/.vimrc"
 alias vp="nvim ~/.vimrc.plugins"
+alias ngitdiff="nvim -c 'Git difftool -y HEAD^'"
 
 gitk() { command gitk "$@" &! }
 

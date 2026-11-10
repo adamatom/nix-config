@@ -7,7 +7,7 @@ Updating everything, home-manager:
 ```
 nix flake update
 home-manager switch --flake "./#adam"
-system-manager switch --sudo --flake "~/nix-config#default"
+system-manager switch --sudo --flake "./#default"
 ```
 
 ### NixOS

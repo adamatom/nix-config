@@ -98,6 +98,10 @@
             overlay-key = "";
           };
 
+          "org/gnome/settings-daemon/plugins/media-keys" = {
+            screensaver = [ "<Control><Alt>l" ]; # lock screen
+          };
+
           "org/gnome/settings-daemon/plugins/power" = {
             sleep-inactive-ac-timeout = 1800;
             sleep-inactive-ac-type = "nothing";

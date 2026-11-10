@@ -1,24 +1,26 @@
 # NixOS + HomeManager config
 
-## Quickstart
+## Updating
 
 Updating everything, home-manager:
 
 ```
 nix flake update
 home-manager switch --flake "./#adam"
+system-manager switch --sudo --flake "~/nix-config#default"
 ```
 
-## NixOS
+### NixOS
 
 When running from NixOS, the home-manager config is loaded automatically. To
 switch both NixOS and home-manager config, run:
 
 ```
+nix flake update
 sudo nixos-rebuild switch --flake '.#hydra'
 ```
 
-## HomeManager
+### HomeManager
 
 When running this config on HomeManager inside of another Linux distribution,
 this command can be run initially to install home-manager and the apps defined
@@ -26,13 +28,6 @@ in this flake:
 
 ```
 nix run "nixpkgs#home-manager" -- switch --flake "./nix-config#adam"
-```
-
-Then after, update with:
-
-```
-home-manager switch --flake ~/nix-config#adam
-system-manager switch --sudo --flake "~/nix-config#default"
 ```
 
 ## Gnome Settings

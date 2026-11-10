@@ -5,6 +5,7 @@
 Updating everything, home-manager:
 
 ```
+nix-collect-garbage --delete-old
 nix flake update
 home-manager switch --flake "./#adam"
 system-manager switch --sudo --flake "./#default"
